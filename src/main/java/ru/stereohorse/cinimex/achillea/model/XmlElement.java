@@ -10,7 +10,8 @@ public class XmlElement {
     private List<XmlElement> children = new ArrayList<XmlElement>();
     private Map<String, String> attributes = new HashMap<String, String>();
 
-    public XmlElement() {}
+    public XmlElement() {
+    }
 
     public XmlElement(String name) {
         this.name = name;

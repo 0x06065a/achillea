@@ -20,9 +20,7 @@ public class MainWindow extends JFrame {
 
     private static final double WINDOW_SIZE_SCALE = 8d / 10d;
 
-
     private XmlParser xmlParser;
-
     private XmlElement currentDocumentRoot;
 
     private JTree xsdTree = new JTree(new DefaultMutableTreeNode(INITIAL_ROOT));
@@ -80,13 +78,13 @@ public class MainWindow extends JFrame {
         double width = dimension.getWidth() * WINDOW_SIZE_SCALE;
         double height = dimension.getHeight() * WINDOW_SIZE_SCALE;
 
-        setSize(new Dimension((int)width, (int)height));
+        setSize(new Dimension((int) width, (int) height));
 
         setLocationRelativeTo(null);
     }
 
     private DefaultMutableTreeNode createTree(DefaultMutableTreeNode treeNode, XmlElement element) {
-        for (XmlElement child: element.getChildren()) {
+        for (XmlElement child : element.getChildren()) {
             treeNode.add(createTree(new DefaultMutableTreeNode(child), child));
         }
 
