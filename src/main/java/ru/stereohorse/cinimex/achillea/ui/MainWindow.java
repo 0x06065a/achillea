@@ -11,19 +11,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
     private static final String WINDOW_TITLE = "Achillea";
     private static final String BTN_OPEN_TITLE = "Открыть XSD";
     private static final String BTN_SAVE_TITLE = "Сохранить CSV";
-    private static final String INITIAL_ROOT = "Выберите XSD-схему";
+
+    private static final String FILE_SAVED = "CSV-файл сохранен";
+    private static final String CHOOSE_XSD = "Выберите XSD-схему";
 
     private static final double WINDOW_SIZE_SCALE = 8d / 10d;
 
     private XmlParser xmlParser;
     private XmlElement currentDocumentRoot;
 
-    private JTree xsdTree = new JTree(new DefaultMutableTreeNode(INITIAL_ROOT));
+    private JFileChooser openFileChooser = new JFileChooser();
+    private JFileChooser saveFileChooser = new JFileChooser();
+    private JTree xsdTree = new JTree(new DefaultMutableTreeNode(CHOOSE_XSD));
 
     public MainWindow(XmlParser xmlParser) {
         super(WINDOW_TITLE);
@@ -36,8 +41,8 @@ public class MainWindow extends JFrame {
         createChooseElementTree();
         createSaveBtn();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSizes();
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void createChooseXsdBtn() {
@@ -45,15 +50,14 @@ public class MainWindow extends JFrame {
         btnChooseXsd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showOpenDialog(MainWindow.this.getContentPane()) != JFileChooser.APPROVE_OPTION) {
+                if (openFileChooser.showOpenDialog(MainWindow.this) != JFileChooser.APPROVE_OPTION) {
                     return;
                 }
 
                 try {
-                    File xsd = fileChooser.getSelectedFile();
-                    currentDocumentRoot = xmlParser.getXmlElements(xsd);
-                    xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xsd.getName()), currentDocumentRoot)));
+                    File xml = openFileChooser.getSelectedFile();
+                    currentDocumentRoot = xmlParser.getXmlElements(xml);
+                    xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xml.getName()), currentDocumentRoot)));
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
@@ -70,6 +74,28 @@ public class MainWindow extends JFrame {
 
     private void createSaveBtn() {
         JButton btnSave = new JButton(BTN_SAVE_TITLE);
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                if (currentDocumentRoot == null) {
+                    JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_XSD, null, JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if (saveFileChooser.showSaveDialog(MainWindow.this) != JFileChooser.APPROVE_OPTION) {
+                    return;
+                }
+
+                try {
+                    xmlParser.toCsv(currentDocumentRoot, saveFileChooser.getSelectedFile());
+                    JOptionPane.showMessageDialog(MainWindow.this, FILE_SAVED);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
+            }
+        });
+
         this.getContentPane().add(btnSave);
     }
 

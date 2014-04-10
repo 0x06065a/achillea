@@ -8,15 +8,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Iterator;
 
 public class XmlParser {
     public XmlElement getXmlElements(File file) throws IOException, XMLStreamException {
-        InputStream input = new FileInputStream(file);
+        InputStream input = new BufferedInputStream(new FileInputStream(file));
         try {
             return getXmlElements(input);
         } finally {
@@ -59,5 +56,23 @@ public class XmlParser {
         }
 
         return root;
+    }
+
+    public void toCsv(XmlElement root, File file) throws IOException {
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+        try {
+            toCsv(root, out);
+        } finally {
+            out.close();
+        }
+    }
+
+    private void toCsv(XmlElement root, OutputStream out) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(out);
+        try {
+            writer.write("HELLO!");
+        } finally {
+            writer.close();
+        }
     }
 }
