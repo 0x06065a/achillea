@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Anton (ZAO Raiffeisenbank) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Typed External ID Type-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prid="http://www.raiffeisen.ru/types/ProductId/v1" xmlns:fma="http://www.raiffeisen.ru/types/FmaId/v1" targetNamespace="http://www.raiffeisen.ru/types/ProductId/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.2">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/FmaId/v1" schemaLocation="FmaId.xsd"/>
+	<xsd:complexType name="ct_ProductId">
+		<xsd:annotation>
+			<xsd:documentation>
+				Version change history:
+				1.0.1 - first annotated version
+				1.0.2 - objectType made optional (minOccurs="0").
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="objectType" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="attribute3" type="xsd:decimal"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="idType" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="stringId" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="fmaId" type="fma:ct_FmaId" minOccurs="0"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

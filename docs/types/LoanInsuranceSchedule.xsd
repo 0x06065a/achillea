@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 (http://www.altova.com) by Julia Zelikman (CJSC Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.raiffeisen.ru/types/LoanInsuranceschedule/v1" xmlns:ext="http://www.raiffeisen.ru/types/ExternalId/v1" xmlns:prid="http://www.raiffeisen.ru/types/ProductId/v1" xmlns:ish="http://www.raiffeisen.ru/types/LoanInsuranceSchedule/v1" targetNamespace="http://www.raiffeisen.ru/types/LoanInsuranceSchedule/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ExternalId/v1" schemaLocation="ExternalId.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ProductId/v1" schemaLocation="ProductId.xsd"/>
+	<xsd:complexType name="ct_InsScheduleParm">
+		<xsd:sequence>
+			<xsd:element name="scheduleId" type="xsd:long" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Уникальный ид-р графика, генерируется системой</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="loanId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Номер кредита</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="clientId" type="ext:ct_ExternalId">
+				<xsd:annotation>
+					<xsd:documentation>Номер клиента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="insTariffType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип страхового тарифа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="insCompany" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование страховой компании</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payDay" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата (день и месяц) ежегодного страхового платежа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="coborrowerCount" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Число созаемщиков</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pledgerCount" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Число залогодателей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="createDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата создания/изменения графика страховых платежей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ntUser" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор пользователя, к-рый создал/изменил график</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<!-- Параметры графика страховых платежей -->
+	</xsd:complexType>
+	<xsd:complexType name="ct_InsPayment">
+		<xsd:sequence>
+			<xsd:element name="payDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>Дата платежа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Тип платежа (напр. жизнь / имущество / титул )</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payerType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Тип плательщика (напр. заемщик / созаемщик / залогодатель )</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="payerNo" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>Номер плательщика (в разрезе типа плательщика, для заемщика всегда 1)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Сумма платежа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<!-- Список страховых платежей по графику -->
+	</xsd:complexType>
+	<xsd:complexType name="ct_InsSchedule">
+		<xsd:annotation>
+			<xsd:documentation/>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="insScheduleParm" type="ish:ct_InsScheduleParm">
+				<xsd:annotation>
+					<xsd:documentation>Параметры графика страховых платежей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="insPayments" type="ish:ct_InsPayment" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Список страховых платежей по графику</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<!-- График страховых платежей -->
+	</xsd:complexType>
+</xsd:schema>

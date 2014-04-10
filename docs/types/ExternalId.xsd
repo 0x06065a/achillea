@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by ruabds2 (EMBRACE) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--External ID Type-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ext="http://www.raiffeisen.ru/types/ExternalId/v1" targetNamespace="http://www.raiffeisen.ru/types/ExternalId/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xsd:complexType name="ct_ExternalId">
+		<xsd:sequence>
+			<xsd:element name="systemId" type="xsd:string"/>
+			<xsd:element name="systemName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="objectId" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

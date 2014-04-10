@@ -1,0 +1,16 @@
+Номер;Название поля;Тип поля;Тип;Обяз.;Комментарий
+1;attribute1;аттрибут;;0..1;
+2;attribute2;аттрибут;boolean;0..1;Аттрибут 2 типа boolean
+3;productId;секция;ct_ProductId;0..n;Идентификаторы продукта
+3.1;objectType;элемент;string;0..1;
+3.1.1;attribute3;аттрибут;decimal;0..1;
+3.2;idType;элемент;string;0..1;
+3.3(choice1);stringId;элемент;string;0..1;
+3.3(choice2);fmaId;секция;ct_FmaId;0..1;
+3.3(choice2).1;brca;элемент;string;1..1;
+3.3(choice2).2;ccy;элемент;string;0..1;
+3.3(choice2).3;cnum;элемент;string;0..1;
+3.3(choice2).4;acod;элемент;string;0..1;
+3.3(choice2).5;acsq;элемент;string;0..1;
+4;parentProductId;секция;ct_ProductId;0..n;
+и так далее;;;;;
