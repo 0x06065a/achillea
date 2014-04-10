@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by ruabds2 (EMBRACE) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Money Sum Type description-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ms="http://www.raiffeisen.ru/types/MoneySum/v1" targetNamespace="http://www.raiffeisen.ru/types/MoneySum/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.2">
+	<xsd:complexType name="ct_MoneySum">
+		<xsd:annotation>
+			<xsd:documentation>
+				Version change history:
+				1.0.1 - first annotated version
+				1.0.2 - element "currency" is now optional (minOccurs=0).
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="currency" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="amount" type="xsd:decimal"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

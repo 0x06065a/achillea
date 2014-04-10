@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by ruabds2 (EMBRACE) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Free Addresss description-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fra="http://www.raiffeisen.ru/types/FreeAddress/v1" targetNamespace="http://www.raiffeisen.ru/types/FreeAddress/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.2">
+	<xsd:complexType name="ct_FreeAddress">
+		<xsd:sequence>
+			<xsd:element name="country" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="postCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="regionType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="region" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="districtType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="district" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="cityType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="city" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="settlementType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="settlement" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="streetType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="street" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="house" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="building" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="apartment" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

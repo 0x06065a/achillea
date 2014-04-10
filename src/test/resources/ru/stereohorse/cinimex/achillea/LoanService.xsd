@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Anton (ZAO Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cll="http://www.raiffeisen.ru/types/CallStatus/v1" xmlns:ln="http://www.raiffeisen.ru/types/Loan/v1" xmlns:prid="http://www.raiffeisen.ru/types/ProductId/v1" xmlns:ext="http://www.raiffeisen.ru/types/ExternalId/v1" xmlns:br="http://www.raiffeisen.ru/types/Branch/v1" xmlns:fc="http://www.raiffeisen.ru/types/Facility/v1" xmlns:ish="http://www.raiffeisen.ru/types/LoanInsuranceSchedule/v1" xmlns:tns="http://www.raiffeisen.ru/services/LoanService/v1" targetNamespace="http://www.raiffeisen.ru/services/LoanService/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Loan/v1" schemaLocation="types/Loan.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ProductId/v1" schemaLocation="types/ProductId.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ExternalId/v1" schemaLocation="types/ExternalId.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Branch/v1" schemaLocation="types/Branch.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Facility/v1" schemaLocation="types/Facility.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/CallStatus/v1" schemaLocation="types/CallStatus.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/LoanInsuranceSchedule/v1" schemaLocation="types/LoanInsuranceSchedule.xsd"/>
+	<xsd:element name="createFacilityResponse" type="tns:ct_CreateFacilityResponse"/>
+	<xsd:element name="createLoanRequest">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="ln:ct_Loan"/>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="ct_CreateFacilityResponse"/>
+	<xsd:element name="createFacilityRequest" type="fc:ct_Facility"/>
+	<xsd:complexType name="ct_CreateFacilityRequest"/>
+	<xsd:complexType name="ct_GetLoanInfoRequest">
+		<xsd:sequence>
+			<xsd:element name="loanId" type="prid:ct_ProductId" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Номер кредита в учетной системе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="branchName" type="br:ct_Branch" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Код отделения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetFacilityInfoRequest">
+		<xsd:sequence>
+			<xsd:element name="facilityId" type="prid:ct_ProductId">
+				<xsd:annotation>
+					<xsd:documentation>Номер сделки в MIDAS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="branchName" type="br:ct_Branch" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Код отделения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetLoanListRequest">
+		<xsd:sequence>
+			<xsd:element name="clientId" type="ext:ct_ExternalId">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор клиента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_LoanCard">
+		<xsd:sequence>
+			<xsd:element name="cardId" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Уникальный ид-р карточки кредита, генерируется системой</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Loan" type="ln:ct_Loan">
+				<xsd:annotation>
+					<xsd:documentation>ct_Loan</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="createDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата создания/изменения карточки кредита</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ntUser" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор пользователя, к-рый создал/изменил карточку кредита</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dataSource" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Источник данных для карточки кредита </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Статус карточки кредита</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="archiveDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата переноса в архив </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="createLoanResponse"/>
+	<xsd:complexType name="ct_GetLoanCardRequest">
+		<xsd:sequence>
+			<xsd:element name="loanId" type="prid:ct_ProductId" maxOccurs="unbounded">
+				<!--Номер кредита в MIDAS-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetArchiveLoanCardsRequest">
+		<xsd:sequence>
+			<xsd:element name="loanId" type="prid:ct_ProductId" maxOccurs="unbounded">
+				<!--Номер кредита в MIDAS-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetCardFromArchiveRequest">
+		<xsd:sequence>
+			<xsd:element name="cardId" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation>Уникальный ид-р карточки кредита, генерируется системой</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetLoanInfoResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loan" type="ln:ct_Loan" minOccurs="0">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetFacilityInfoResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus"/>
+			<xsd:element name="facility" type="fc:ct_Facility" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetLoanListResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loan" type="ln:ct_Loan" minOccurs="0" maxOccurs="unbounded">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_CreateLoanCardResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loanCardId" type="xsd:integer" minOccurs="0">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetLoanCardResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loanCard" type="tns:ct_LoanCard" minOccurs="0">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetCardFromArchiveResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loanCard" type="tns:ct_LoanCard" minOccurs="0">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetArchiveLoanCardsResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="loanCard" type="tns:ct_LoanCard" minOccurs="0" maxOccurs="unbounded">
+				<!--Детали кредита-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetPayAcctInfoRequest">
+		<xsd:sequence>
+			<xsd:element name="accountId" type="prid:ct_ProductId">
+				<!--RMA счета для погашения кредита -->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetPayAcctInfoResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="payAcctInfo" type="ln:ct_payAcctInfo" minOccurs="0">
+				<!--Информация по счету погашения-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_CreateInsScheduleResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="insScheduleId" type="xsd:integer" minOccurs="0">
+				<!--Идентификатор созданного графика погашения-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetInsScheduleRequest">
+		<xsd:sequence>
+			<xsd:element name="loanId" type="prid:ct_ProductId">
+				<xsd:annotation>
+					<xsd:documentation>Номер кредита в MIDAS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetInsScheduleResponse">
+		<xsd:sequence>
+			<xsd:element name="status" type="cll:ct_CallStatus">
+				<!--Статус вызова операции-->
+			</xsd:element>
+			<xsd:element name="insSchedule" type="ish:ct_InsSchedule" minOccurs="0">
+				<!--Идентификатор созданного графика погашения-->
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="getLoanInfoRequest" type="tns:ct_GetLoanInfoRequest"/>
+	<xsd:element name="getLoanInfoResponse" type="tns:ct_GetLoanInfoResponse"/>
+	<xsd:element name="GetFacilityInfoRequest" type="tns:ct_GetFacilityInfoRequest"/>
+	<xsd:element name="GetFacilityInfoResponse" type="tns:ct_GetFacilityInfoResponse"/>
+	<xsd:element name="getLoanListRequest" type="tns:ct_GetLoanListRequest"/>
+	<xsd:element name="getLoanListResponse" type="tns:ct_GetLoanListResponse"/>
+	<xsd:element name="createLoanCardRequest" type="tns:ct_LoanCard"/>
+	<xsd:element name="createLoanCardResponse" type="tns:ct_CreateLoanCardResponse"/>
+	<xsd:element name="getLoanCardRequest" type="tns:ct_GetLoanCardRequest"/>
+	<xsd:element name="getLoanCardResponse" type="tns:ct_GetLoanCardResponse"/>
+	<xsd:element name="getArchiveLoanCardsRequest" type="tns:ct_GetArchiveLoanCardsRequest"/>
+	<xsd:element name="getArchiveLoanCardsResponse" type="tns:ct_GetArchiveLoanCardsResponse"/>
+	<xsd:element name="getCardFromArchiveRequest" type="tns:ct_GetCardFromArchiveRequest"/>
+	<xsd:element name="getCardFromArchiveResponse" type="tns:ct_GetCardFromArchiveResponse"/>
+	<xsd:element name="getPayAcctInfoRequest" type="tns:ct_GetPayAcctInfoRequest"/>
+	<xsd:element name="getPayAcctInfoResponse" type="tns:ct_GetPayAcctInfoResponse"/>
+	<xsd:element name="createInsScheduleRequest" type="ish:ct_InsSchedule"/>
+	<xsd:element name="createInsScheduleResponse" type="tns:ct_CreateInsScheduleResponse"/>
+	<xsd:element name="getInsScheduleRequest" type="tns:ct_GetInsScheduleRequest"/>
+	<xsd:element name="getInsScheduleResponse" type="tns:ct_GetInsScheduleResponse"/>
+</xsd:schema>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Anton (ZAO Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bp="http://www.raiffeisen.ru/types/BankProduct/v1" xmlns:prid="http://www.raiffeisen.ru/types/ProductId/v1" xmlns:extid="http://www.raiffeisen.ru/types/ExternalId/v1" xmlns:ln="http://www.raiffeisen.ru/types/Loan/v1" targetNamespace="http://www.raiffeisen.ru/types/Loan/v1" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.0.0">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/BankProduct/v1" schemaLocation="BankProduct.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ExternalId/v1" schemaLocation="ExternalId.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/ProductId/v1" schemaLocation="ProductId.xsd"/>
+	<xsd:complexType name="ct_Rate">
+		<xsd:sequence>
+			<xsd:element name="rateCode" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Тип ставки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="valueType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип значения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rateValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Значение</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Debt">
+		<xsd:sequence>
+			<xsd:element name="debtType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип задолженности</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="amount" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Сумма задолжености</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="penalty" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Начисленные пени</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="debtId" type="prid:ct_ProductId" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор задолженности</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_payAcctInfo">
+		<xsd:sequence>
+			<xsd:element name="accountId" type="prid:ct_ProductId" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Номер cчета</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="accountBalance" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Остаток по счету</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="balanceTotal" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Итоговый баланс с учетом просрочек</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Статус счета</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pastdueDebtList" type="ln:ct_Debt" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Список просроченных задолженностей по счету</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_EarlyRepay">
+		<xsd:sequence>
+			<xsd:element name="ersZone" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Зона обслуживания (кто может производить досрочное погашение - КАД или Фронт-офис)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="earlyRepayFee" type="ln:ct_Rate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Комиссия за досрочное погашение</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ersFeeEndDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата окончания действия комиссии за досрочное погашение</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="minEarlyRepayAmount" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Минимальная сумма досрочного погашения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="moratoriumSign" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Мораторий: флаг наличия моратория</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="moratoriumEndDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата окончания моратория</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="hasScheduleFixed" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Признак: График погашения – часть договора</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="hasTermFlex" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Признак: Возможность сокращения срока</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Loan">
+		<xsd:complexContent>
+			<xsd:extension base="bp:ct_BankProduct">
+				<xsd:sequence>
+					<xsd:element name="currencyCode" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Валюта договора</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="principalAmount" type="xsd:decimal" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Первоначальная сумма кредита(выданная сумма)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="loanRate" type="ln:ct_Rate" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Процентная ставка</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="repaymentDay" type="xsd:integer" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>День погашения</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="repaymentNextDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Дата следующего платежа</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="monthlyPayAmount" type="xsd:decimal" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Полная сумма ежемесячного платежа </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="payFee" type="ln:ct_Rate" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Комиссии договора</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Debt" type="ln:ct_Debt" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Блок задолженности по кредиту</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="accountId" type="prid:ct_ProductId" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Счета договора</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="transferred" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Признак кредита, переведенного из АБС</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="restructured" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Признак реструктуризированного кредита</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="secured" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Признак секьютиризации</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="manager" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Сотрудник, сопровождающий сделку</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="bankName" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Банк, заключивший договор </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="earlyRepay" type="ln:ct_EarlyRepay" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Параметры досрочного погашения</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="repaymentFirstDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Дата первого платежа</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="repaymentFirstPayType" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Тип первого платежа</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="hasCoborrower" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Признак наличия созаемщиков</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="coborrowerId" type="extid:ct_ExternalId" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>Идентификаторы созаемщиков</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="appraisalAmount" type="xsd:decimal" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Сумма Оценки</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="notaryAmount" type="xsd:decimal" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Сумма за Нотариус/Юридическая фирма</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="lockBoxAmount" type="xsd:decimal" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Сумма за  Аренду сейфовой ячейки/аккредитив</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="appraisalCompany" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Наименование независимого оценщика</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="notaryCompany" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Наименование нотариуса/юридической фирмы</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="hasInsurance" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Ипотека:Наличие Страховки</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="attribute1"/>
+				<xsd:attribute name="attribute2" type="xsd:boolean">
+					<xsd:annotation>
+						<xsd:documentation>Аттрибут 2 типа boolean</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

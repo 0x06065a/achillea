@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by ruabds2 (EMBRACE) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Service Type description-->
+<xsd:schema xmlns:cf="http://www.raiffeisen.ru/types/CustomField/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.raiffeisen.ru/types/CustomField/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xsd:complexType name="ct_CustomField">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

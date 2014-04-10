@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by ruabds2 (EMBRACE) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Addresss description-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.raiffeisen.ru/types/Address/v1" xmlns:kld="http://www.raiffeisen.ru/types/KladrAddress/v1" xmlns:fra="http://www.raiffeisen.ru/types/FreeAddress/v1" targetNamespace="http://www.raiffeisen.ru/types/Address/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/FreeAddress/v1" schemaLocation="FreeAddress.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/KladrAddress/v1" schemaLocation="KladrAddress.xsd"/>
+	<xsd:complexType name="ct_Address">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string"/>
+			<xsd:element name="freeAddress" type="fra:ct_FreeAddress" minOccurs="0"/>
+			<xsd:element name="kladrAddress" type="kld:ct_KladrAddress" minOccurs="0"/>
+			<xsd:element name="stringAddress" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

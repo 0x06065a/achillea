@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp1 (http://www.altova.com) by Raiffeisen Informatik Consulting GmbH (Raiffeisen Informatik Consulting GmbH) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Service Type description-->
+<xsd:schema xmlns:asr="http://www.raiffeisen.ru/types/AdditionalService/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.raiffeisen.ru/types/AdditionalService/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1.1">
+	<xsd:complexType name="ct_AdditionalService">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
