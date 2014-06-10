@@ -1,8 +1,8 @@
 package ru.stereohorse.cinimex.achillea.ui;
 
 
-import ru.stereohorse.cinimex.achillea.XmlParser;
-import ru.stereohorse.cinimex.achillea.model.XmlElement;
+import ru.stereohorse.cinimex.achillea.model.XmlNode;
+import ru.stereohorse.cinimex.achillea.model.XsdSchema;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -23,17 +23,14 @@ public class MainWindow extends JFrame {
 
     private static final double WINDOW_SIZE_SCALE = 8d / 10d;
 
-    private XmlParser xmlParser;
-    private XmlElement currentDocumentRoot;
+    private XsdSchema currentSchema;
 
-    private JFileChooser openFileChooser = new JFileChooser();
-    private JFileChooser saveFileChooser = new JFileChooser();
-    private JTree xsdTree = new JTree(new DefaultMutableTreeNode(CHOOSE_XSD));
+    private final JFileChooser openFileChooser = new JFileChooser();
+    private final JFileChooser saveFileChooser = new JFileChooser();
+    private final JTree xsdTree = new JTree(new DefaultMutableTreeNode(CHOOSE_XSD));
 
-    public MainWindow(XmlParser xmlParser) {
+    public MainWindow() {
         super(WINDOW_TITLE);
-
-        this.xmlParser = xmlParser;
 
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.LINE_AXIS));
 
@@ -56,8 +53,8 @@ public class MainWindow extends JFrame {
 
                 try {
                     File xml = openFileChooser.getSelectedFile();
-                    currentDocumentRoot = xmlParser.getXmlElements(xml);
-                    xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xml.getName()), currentDocumentRoot)));
+                    currentSchema = new XsdSchema(xml);
+                    xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xml.getName()), currentSchema.getRoot())));
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
@@ -77,7 +74,7 @@ public class MainWindow extends JFrame {
         btnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                if (currentDocumentRoot == null) {
+                if (currentSchema == null) {
                     JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_XSD, null, JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -87,7 +84,7 @@ public class MainWindow extends JFrame {
                 }
 
                 try {
-                    xmlParser.toCsv(currentDocumentRoot, saveFileChooser.getSelectedFile());
+                    currentSchema.toCsv(saveFileChooser.getSelectedFile());
                     JOptionPane.showMessageDialog(MainWindow.this, FILE_SAVED);
                 } catch (IOException e) {
                     JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
@@ -109,8 +106,8 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private DefaultMutableTreeNode createTree(DefaultMutableTreeNode treeNode, XmlElement element) {
-        for (XmlElement child : element.getChildren()) {
+    private DefaultMutableTreeNode createTree(DefaultMutableTreeNode treeNode, XmlNode element) {
+        for (XmlNode child : element.getChildren()) {
             treeNode.add(createTree(new DefaultMutableTreeNode(child), child));
         }
 
