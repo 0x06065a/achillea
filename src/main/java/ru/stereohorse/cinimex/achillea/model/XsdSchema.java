@@ -6,33 +6,71 @@ import com.google.common.base.Strings;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Namespace;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.util.*;
 
 
 public class XsdSchema {
-    private final Map<String, XmlNode> complexTypes = new HashMap<>();
-    private final List<XsdSchema> children = new ArrayList<>();
+    private static final String ERR_FMT_IMPORT = "Cannot import [%s] from [%s]";
+    private static final String XSD_URI = "http://www.w3.org/2001/XMLSchema";
+
+    private static final List<String> BUILT_IN_DATATYPES = Arrays.asList("string", "boolean", "decimal", "float",
+            "double", "duration", "dateTime", "time", "date", "gYearMonth", "gYear", "gMonthDay", "gDay", "gMonth",
+            "hexBinary", "base64Binary", "anyURI", "anyType", "QName", "NOTATION", "normalizedString", "token", "language",
+            "NMTOKEN", "NMTOKENS", "Name", "NCName", "ID", "IDREF", "IDREFS", "ENTITY", "ENTITIES", "integer",
+            "nonPositiveInteger", "negativeInteger", "long", "int", "short", "byte", "nonNegativeInteger",
+            "unsignedLong", "unsignedInt", "unsignedShort", "unsignedByte", "positiveInteger");
+
+    private final XmlNode root = new XmlNode(this);
+    private final List<XmlNode> imports = new ArrayList<>();
+    private final Map<String, String> namespaces = new HashMap<>();
+    private final List<XsdSchema> linkedSchemas = new ArrayList<>();
+    private final Map<String, XmlNode> xmlTypes = new HashMap<>();
+
+    private final String nsPrefix;
+    private String tnsPrefix;
+
     private final File file;
 
-    private final XmlNode root = new XmlNode();
-
     public XsdSchema(File file) throws IOException, XMLStreamException {
+        this(file, "");
+    }
+
+    public XsdSchema(File file, String nsPrefix) throws IOException, XMLStreamException {
+        this.nsPrefix = nsPrefix;
         this.file = file;
 
         try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
             XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
             XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(input);
             try {
-                root.setChildren(parse(xmlEventReader));
-            } finally {
+                root.setChildren(parse(xmlEventReader, null));
+            }  finally {
                 xmlEventReader.close();
             }
         }
+
+        for (XmlNode imp : imports) {
+            String schemaLocation = imp.getAttribute(XmlAttribute.SCHEMA_LOCATION);
+            String nsURI = imp.getAttribute(XmlAttribute.NAMESPACE);
+            String linkedSchemaNsPrefix = namespaces.get(nsURI);
+
+            try {
+                linkedSchemas.add(new XsdSchema(new File(file.getParent(), schemaLocation), linkedSchemaNsPrefix));
+            } catch (IOException | XMLStreamException e) {
+                throw new RuntimeException(String.format(ERR_FMT_IMPORT, schemaLocation, file.getAbsolutePath()), e);
+            }
+        }
+
+        String xsdNamespace = namespaces.get(XSD_URI);
+        for (String type : BUILT_IN_DATATYPES) {
+            xmlTypes.put(String.format("%s:%s", xsdNamespace, type), XmlNode.EXTERNAL);
+        }
     }
 
-    private List<XmlNode> parse(XMLEventReader xmlEventReader) throws XMLStreamException {
+    private List<XmlNode> parse(XMLEventReader xmlEventReader, XmlNode parent) throws XMLStreamException {
         List<XmlNode> nodes = Collections.emptyList();
 
         while (xmlEventReader.hasNext()) {
@@ -40,12 +78,11 @@ public class XsdSchema {
 
             if (xmlEvent.isEndElement()) {
                 return nodes;
+            } else if (xmlEvent.isCharacters() && parent != null) {
+                parent.setTextValue(xmlEvent.asCharacters().getData());
             } else if (xmlEvent.isStartElement()) {
-                XmlNode node = new XmlNode(xmlEvent.asStartElement().getName().getLocalPart());
-                node.setAttributes(xmlEvent);
-                node.setChildren(parse(xmlEventReader));
-
-                parse(node);
+                XmlNode node = parse(xmlEvent);
+                node.setChildren(parse(xmlEventReader, node));
 
                 if (nodes.isEmpty()) {
                     nodes = new ArrayList<>();
@@ -57,22 +94,41 @@ public class XsdSchema {
         return nodes;
     }
 
-    private void parse(XmlNode node) {
-        if ("complexType".equals(node.getName())) {
-            String name = node.getAttributes().get("name");
-            if (!Strings.isNullOrEmpty(name)) {
-                complexTypes.put(name, node);
+    private XmlNode parse(XMLEvent xmlEvent) throws XMLStreamException {
+        XmlTag tag = XmlTag.of(xmlEvent.asStartElement().getName().getLocalPart());
+        XmlNode node = new XmlNode(this, tag);
+
+        node.setAttributes(xmlEvent);
+        node.setLine(xmlEvent.getLocation().getLineNumber());
+
+        parseNamespaces(xmlEvent);
+
+        if (tag != null) {
+            switch (tag) {
+                case COMPLEX_TYPE:
+                    String typeName = node.getAttribute(XmlAttribute.NAME);
+                    String prefix = Strings.isNullOrEmpty(nsPrefix) ? tnsPrefix : nsPrefix;
+                    xmlTypes.put(String.format("%s:%s", prefix, typeName), node);
+                    break;
+
+                case IMPORT:
+                    imports.add(node);
+                    break;
+
+                case SCHEMA:
+                    tnsPrefix = namespaces.get(node.getAttribute(XmlAttribute.TNS));
+                    break;
             }
-        } else if ("import".equals(node.getName())) {
-            String schemaLocation = node.getAttributes().get("schemaLocation");
-            if (!Strings.isNullOrEmpty(schemaLocation)) {
-                try {
-                    children.add(new XsdSchema(new File(file.getParent(), schemaLocation)));
-                } catch (IOException | XMLStreamException e) {
-                    throw new RuntimeException(String.format("Cannot import [%s] from [%s]",
-                            schemaLocation, file.getAbsolutePath()));
-                }
-            }
+        }
+
+        return node;
+    }
+
+    private void parseNamespaces(XMLEvent xmlEvent) {
+        Iterator namespaces = xmlEvent.asStartElement().getNamespaces();
+        while (namespaces.hasNext()) {
+            Namespace ns = (Namespace) namespaces.next();
+            this.namespaces.put(ns.getNamespaceURI(), ns.getPrefix());
         }
     }
 
@@ -80,15 +136,11 @@ public class XsdSchema {
         return root;
     }
 
-    public Map<String, XmlNode> getComplexTypes() {
-        return complexTypes;
-    }
-
-    public XmlNode getComplexType(String name) {
-        XmlNode node = complexTypes.get(name);
+    public XmlNode getXmlType(String name) {
+        XmlNode node = xmlTypes.get(name);
         if (node == null) {
-            for (XsdSchema schema : children) {
-                node = schema.getComplexType(name);
+            for (XsdSchema schema : linkedSchemas) {
+                node = schema.getXmlType(name);
                 if (node != null) {
                     return node;
                 }
@@ -98,25 +150,19 @@ public class XsdSchema {
         return node;
     }
 
-    /**
-     * Debug
-     */
-    public Set<String> getAllTagNames() {
-        Set<String> names = root.getAllNames();
-
-        for (XsdSchema child : children) {
-            names.addAll(child.getAllTagNames());
-        }
-
-        return names;
+    public XmlNode getNodeByNameAttribute(String name) {
+        return root.getNodeByNameAttribute(name);
     }
 
+    public File getFile() {
+        return file;
+    }
 
-    public void toCsv(File file) throws IOException {
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-            try (OutputStreamWriter writer = new OutputStreamWriter(out)) {
-                writer.write("HELLO!");
-            }
-        }
+    public String getTnsPrefix() {
+        return tnsPrefix;
+    }
+
+    public String getNsPrefix() {
+        return nsPrefix;
     }
 }

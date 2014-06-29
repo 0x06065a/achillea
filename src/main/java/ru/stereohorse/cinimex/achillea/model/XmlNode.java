@@ -1,28 +1,68 @@
 package ru.stereohorse.cinimex.achillea.model;
 
+import com.google.common.base.Strings;
+
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.*;
 
+
 public class XmlNode {
-    private String name;
+    private final XmlTag tag;
+    private int line;
     private List<XmlNode> children;
-    private final Map<String, String> attributes = new HashMap<>();
+    private final Map<String, String> attributes;
+    private XsdSchema schema;
+    private String textValue;
 
-    public XmlNode() {
+    public static final XmlNode EXTERNAL = new XmlNode(
+            null, null,
+            Collections.<String, String>emptyMap(),
+            Collections.<XmlNode>emptyList()
+    );
+
+    public XmlNode(XsdSchema schema) {
+        this(schema, XmlTag.UNKNOWN);
     }
 
-    public XmlNode(String name) {
-        this.name = name;
+    public XmlNode(XsdSchema schema, XmlTag tag) {
+        this(schema, tag, new HashMap<String, String>(), null);
     }
 
-    public String getName() {
-        return name;
+    private XmlNode(XsdSchema schema, XmlTag tag, Map<String, String> attributes, List<XmlNode> children) {
+        this.tag = tag;
+        this.schema = schema;
+        this.attributes = attributes;
+        this.children = children;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public XsdSchema getSchema() {
+        return schema;
+    }
+
+    public XmlTag getTag() {
+        return tag;
+    }
+
+    public String getFormattedTextValue() {
+        if (textValue == null) {
+            return null;
+        }
+
+        return textValue.replaceAll("\\s*\\n+\\s*", " ").replace(";", ",").trim();
+    }
+
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
     }
 
     public void setChildren(List<XmlNode> children) {
@@ -33,8 +73,17 @@ public class XmlNode {
         return children;
     }
 
-    public Map<String, String> getAttributes() {
-        return attributes;
+    public String getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    public String getAttribute(String name, String defaultVal) {
+        String val = attributes.get(name);
+        if (Strings.isNullOrEmpty(val)) {
+            return defaultVal;
+        }
+
+        return val;
     }
 
     public void setAttributes(XMLEvent xmlEvent) {
@@ -49,7 +98,7 @@ public class XmlNode {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(name);
+        sb.append(tag);
 
         if (attributes.size() != 0) {
             sb.append("( ");
@@ -59,35 +108,74 @@ public class XmlNode {
             sb.append(')');
         }
 
-        return sb.toString();
+        return sb.append(String.format(" [%s:%d]", schema.getFile().getName(), line)).toString();
     }
 
-    public String toTreeString() {
-        return toString(new StringBuilder(), "").toString();
-    }
-
-    private StringBuilder toString(StringBuilder sb, String prefix) {
-        sb.append(prefix).append(toString()).append('\n');
-
-        for (XmlNode child : children) {
-            sb = child.toString(sb, prefix + "  ");
+    private XmlNode getNode(String condition, Predicate predicate) {
+        if (Strings.isNullOrEmpty(condition)) {
+            return null;
         }
 
-        return sb;
-    }
-
-    public Set<String> getAllNames() {
-        Set<String> names = new HashSet<>();
-        return getAllNames(names);
-    }
-
-    private Set<String> getAllNames(Set<String> names) {
-        names.add(name);
-
-        for (XmlNode child : children) {
-            child.getAllNames(names);
+        if (predicate.satisfies(this, condition)) {
+            return this;
         }
 
-        return names;
+        for (XmlNode child : children) {
+            XmlNode node = child.getNode(condition, predicate);
+            if (node != null) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    public XmlNode getNodeByNameAttribute(String name) {
+        return getNode(name, new Predicate() {
+            @Override
+            public boolean satisfies(XmlNode node, String condition) {
+                return condition.equals(node.attributes.get(XmlAttribute.NAME));
+            }
+        });
+    }
+
+    public String getXmlLocalType() {
+        String xmlType = getXmlType();
+        if (xmlType == null) {
+            return null;
+        }
+
+        return xmlType.replaceAll(".*?:", "");
+    }
+
+    public static interface Predicate {
+        public boolean satisfies(XmlNode node, String condition);
+    }
+
+    public String getXmlType() {
+        String xmlType = attributes.get(XmlAttribute.TYPE);
+        if (Strings.isNullOrEmpty(xmlType)) {
+            xmlType = attributes.get(XmlAttribute.BASE);
+        }
+
+        if (Strings.isNullOrEmpty(xmlType)) {
+            return null;
+        }
+
+        return xmlType;
+    }
+
+    public String getCalculatedXmlType() {
+        String xmlType = getXmlType();
+        if (xmlType == null) {
+            return null;
+        }
+
+        String schemaTnsPrefix = schema.getTnsPrefix();
+        if (xmlType.startsWith(schemaTnsPrefix + ":")) {
+            return schema.getNsPrefix() + xmlType.substring(schemaTnsPrefix.length());
+        }
+
+        return xmlType;
     }
 }
