@@ -74,7 +74,7 @@ public class Csv {
                 entities.add(csvEntity);
 
                 String number = String.format("%s%d.", parsingData.getPrefix(), parsingData.getCounter());
-                csvEntity.setNumber(number);
+                csvEntity.setNumber(number.substring(0, number.length() - 1));
 
                 parsingData.setCounter(parsingData.getCounter() + 1);
 

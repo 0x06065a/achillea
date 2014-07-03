@@ -173,7 +173,8 @@ public class XmlNode {
 
         String schemaTnsPrefix = schema.getTnsPrefix();
         if (xmlType.startsWith(schemaTnsPrefix + ":")) {
-            return schema.getNsPrefix() + xmlType.substring(schemaTnsPrefix.length());
+            String prefix = Strings.isNullOrEmpty(schema.getNsPrefix()) ? schema.getTnsPrefix() : schema.getNsPrefix();
+            return prefix + xmlType.substring(schemaTnsPrefix.length());
         }
 
         return xmlType;
