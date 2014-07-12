@@ -108,7 +108,7 @@ public class XmlNode {
             sb.append(')');
         }
 
-        return sb.append(String.format(" [%s:%d]", schema.getFile().getName(), line)).toString();
+        return sb.toString();
     }
 
     private XmlNode getNode(String condition, Predicate predicate) {
