@@ -16,7 +16,7 @@ public class XsdSchema {
     private static final String ERR_FMT_IMPORT = "Cannot import [%s] from [%s]";
     private static final String XSD_URI = "http://www.w3.org/2001/XMLSchema";
 
-    private static final List<String> BUILT_IN_DATATYPES = Arrays.asList("string", "boolean", "decimal", "float",
+    private static final List<String> BUILT_IN_DATA_TYPES = Arrays.asList("string", "boolean", "decimal", "float",
             "double", "duration", "dateTime", "time", "date", "gYearMonth", "gYear", "gMonthDay", "gDay", "gMonth",
             "hexBinary", "base64Binary", "anyURI", "anyType", "QName", "NOTATION", "normalizedString", "token", "language",
             "NMTOKEN", "NMTOKENS", "Name", "NCName", "ID", "IDREF", "IDREFS", "ENTITY", "ENTITIES", "integer",
@@ -38,7 +38,7 @@ public class XsdSchema {
         this(file, "");
     }
 
-    public XsdSchema(File file, String nsPrefix) throws IOException, XMLStreamException {
+    private XsdSchema(File file, String nsPrefix) throws IOException, XMLStreamException {
         this.nsPrefix = nsPrefix;
         this.file = file;
 
@@ -65,7 +65,7 @@ public class XsdSchema {
         }
 
         String xsdNamespace = namespaces.get(XSD_URI);
-        for (String type : BUILT_IN_DATATYPES) {
+        for (String type : BUILT_IN_DATA_TYPES) {
             xmlTypes.put(String.format("%s:%s", xsdNamespace, type), XmlNode.EXTERNAL);
         }
     }
@@ -94,8 +94,8 @@ public class XsdSchema {
         return nodes;
     }
 
-    private XmlNode parse(XMLEvent xmlEvent) throws XMLStreamException {
-        XmlTag tag = XmlTag.of(xmlEvent.asStartElement().getName().getLocalPart());
+    private XmlNode parse(XMLEvent xmlEvent) {
+        XmlTag tag = new XmlTag(xmlEvent.asStartElement().getName().getLocalPart());
         XmlNode node = new XmlNode(this, tag);
 
         node.setAttributes(xmlEvent);
@@ -103,19 +103,19 @@ public class XsdSchema {
 
         parseNamespaces(xmlEvent);
 
-        if (tag != null) {
-            switch (tag) {
-                case COMPLEX_TYPE:
+        if (tag.getName() != null) {
+            switch (tag.getName()) {
+                case XmlTag.COMPLEX_TYPE:
                     String typeName = node.getAttribute(XmlAttribute.NAME);
                     String prefix = Strings.isNullOrEmpty(nsPrefix) ? tnsPrefix : nsPrefix;
                     xmlTypes.put(String.format("%s:%s", prefix, typeName), node);
                     break;
 
-                case IMPORT:
+                case XmlTag.IMPORT:
                     imports.add(node);
                     break;
 
-                case SCHEMA:
+                case XmlTag.SCHEMA:
                     tnsPrefix = namespaces.get(node.getAttribute(XmlAttribute.TNS));
                     break;
             }

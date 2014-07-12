@@ -1,7 +1,7 @@
 package ru.stereohorse.cinimex.achillea.model;
 
 
-public class XmlAttribute {
+class XmlAttribute {
     public static final String NAME = "name";
     public static final String SCHEMA_LOCATION = "schemaLocation";
     public static final String BASE = "base";

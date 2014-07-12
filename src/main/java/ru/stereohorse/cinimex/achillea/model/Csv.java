@@ -17,9 +17,9 @@ public class Csv {
 
     private static final String NEW_LINE = String.format("%n");
 
-    private static final Map<XmlTag, String> TYPES = new HashMap<>();
+    private static final Map<String, String> TYPES = new HashMap<>();
 
-    private List<CsvEntity> entities = new ArrayList<>();
+    private final List<CsvEntity> entities = new ArrayList<>();
 
     static {
         TYPES.put(XmlTag.ATTRIBUTE, "атрибут");
@@ -42,30 +42,30 @@ public class Csv {
             ParsingData childData = new ParsingData(parsingData);
 
             CsvEntity csvEntity = new CsvEntity();
-            csvEntity.setFieldType(TYPES.get(tag));
+            csvEntity.setFieldType(TYPES.get(tag.getName()));
             csvEntity.setFieldName(node.getAttribute(XmlAttribute.NAME));
 
-            switch (tag) {
-                case ELEMENT:
+            switch (tag.getName()) {
+                case XmlTag.ELEMENT:
                     parsingData.getTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
                     childData.setTypeReceiver(csvEntity);
                     childData.setCommentsReceiver(csvEntity);
                     csvEntity.setConstraint(getConstraint(node));
                     break;
 
-                case ATTRIBUTE:
+                case XmlTag.ATTRIBUTE:
                     childData.setCommentsReceiver(csvEntity);
                     break;
 
-                case DOCUMENTATION:
+                case XmlTag.DOCUMENTATION:
                     parsingData.getCommentsReceiver().setComment(node.getFormattedTextValue());
                     break;
 
-                case CHOICE:
+                case XmlTag.CHOICE:
                     // childData.setPrefix(childData.getPrefix() + "(choice)");
                     break;
 
-                case EXTENSION:
+                case XmlTag.EXTENSION:
                     // childData.setPrefix();
                     break;
             }

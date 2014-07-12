@@ -13,7 +13,7 @@ public class XmlNode {
     private int line;
     private List<XmlNode> children;
     private final Map<String, String> attributes;
-    private XsdSchema schema;
+    private final XsdSchema schema;
     private String textValue;
 
     public static final XmlNode EXTERNAL = new XmlNode(
@@ -23,7 +23,7 @@ public class XmlNode {
     );
 
     public XmlNode(XsdSchema schema) {
-        this(schema, XmlTag.UNKNOWN);
+        this(schema, new XmlTag());
     }
 
     public XmlNode(XsdSchema schema, XmlTag tag) {

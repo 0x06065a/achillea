@@ -1,21 +1,24 @@
 package ru.stereohorse.cinimex.achillea.model;
 
 
-public enum XmlTag {
-    COMPLEX_TYPE("complexType"),
-    IMPORT("import"),
-    ATTRIBUTE("attribute"),
-    ELEMENT("element"),
-    SECTION("section"),
-    EXTENSION("extension"),
-    SCHEMA("schema"),
-    DOCUMENTATION("documentation"),
-    CHOICE("choice"),
-    UNKNOWN("");
+public class XmlTag {
+    public static final String ELEMENT = "element";
+    public static final String COMPLEX_TYPE = "complexType";
+    public static final String IMPORT = "import";
+    public static final String SCHEMA = "schema";
+    public static final String ATTRIBUTE = "attribute";
+    public static final String SECTION = "section";
+    public static final String EXTENSION = "extension";
+    public static final String DOCUMENTATION = "documentation";
+    public static final String CHOICE = "choice";
 
     private final String name;
 
-    private XmlTag(String name) {
+    public XmlTag() {
+        this(null);
+    }
+
+    public XmlTag(String name) {
         this.name = name;
     }
 
@@ -23,17 +26,12 @@ public enum XmlTag {
         return name;
     }
 
-    public static XmlTag of(String name) {
-        for (XmlTag tag : XmlTag.values()) {
-            if (tag.getName().equals(name)) {
-                return tag;
-            }
-        }
-
-        return UNKNOWN;
+    public boolean isComplexTypeDeclaration(XmlNode parentNode) {
+        return COMPLEX_TYPE.equals(getName()) && !ELEMENT.equals(parentNode.getTag().getName());
     }
 
-    public boolean isComplexTypeDeclaration(XmlNode parentNode) {
-        return this == XmlTag.COMPLEX_TYPE && parentNode.getTag() != XmlTag.ELEMENT;
+    @Override
+    public String toString() {
+        return name;
     }
 }

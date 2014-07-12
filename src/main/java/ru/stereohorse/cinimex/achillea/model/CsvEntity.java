@@ -4,7 +4,7 @@ package ru.stereohorse.cinimex.achillea.model;
 import com.google.common.base.Strings;
 
 public class CsvEntity {
-    public static final String SEP = ";";
+    private static final String SEP = ";";
     public static final CsvEntity DUMMY = new CsvEntity();
 
     private String number;
