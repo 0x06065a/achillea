@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.raiffeisen.ru/types/ExchangeRate/v1" targetNamespace="http://www.raiffeisen.ru/types/ExchangeRate/v1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:complexType name="ct_Rates">
+		<xsd:annotation>
+			<xsd:documentation>Описание типа списка курсов (групп курсов)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ratesGroup" type="tns:ct_RatesGroup" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Группы курсов в списке</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_RatesGroup">
+		<xsd:annotation>
+			<xsd:documentation>Описание типа группы курсов (составного курса)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="groupId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор группы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rate" type="tns:ct_Rate" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Список курсов в группе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Rate">
+		<xsd:annotation>
+			<xsd:documentation>Описание типа курса</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="rateTypeId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Тип курса, например FWD_USD_01W</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rateId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Уникальный идентификатор курса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="receiptTime" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Дата и время получения (генерации?) курса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseCurrency" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Валюта, к которой установлен курс (валюта знаменателя), используется если валюта единственная</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="counterCurrency" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Валюта, в которой установлен курс (валюта числителя)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="baseCurrencyMultiplier" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Множитель валюты знаменателя (например, 1 для USD/RUB и 100 для JPY/RUB)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="bidValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Значение спроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="offerValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Значение предложения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="openValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Значение открытия</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="closeValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Значение закрытия (используется, если курс содержит единственное значение, например для LIBOR)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="highValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наивысшее значение за период</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="lowValue" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименьшее значение за период</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sortOrder" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Порядковый номер курса в группе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Описание</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tenorApp" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тенор</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="volume" type="xsd:decimal" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Объем, для которого действует курс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isOverride" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Перекрывает ли новое значение курса старое</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="startTime" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Начало действия курса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="validTill" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Окончание действия курса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="customField" type="tns:ct_CustomField" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Список дополнительных полей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_CustomField">
+		<xsd:annotation>
+			<xsd:documentation>Описание типа дополнительного поля</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Наименование поля</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Значение поля</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="Rates" type="tns:ct_Rates">
+		<xsd:annotation>
+			<xsd:documentation>Список курсов (групп курсов), возвращаемый в сообщении</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+</xsd:schema>
