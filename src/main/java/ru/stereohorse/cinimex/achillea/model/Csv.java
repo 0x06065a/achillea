@@ -31,34 +31,34 @@ public class Csv {
         parse(node, new ParsingData());
     }
 
-    private void parse(XmlNode parent, ParsingData parsingData) {
-        for (XmlNode node : parent.getChildren()) {
-            XmlTag tag = node.getTag();
+    private void parse(XmlNode parentNode, ParsingData parentData) {
+        for (XmlNode currentNode : parentNode.getChildren()) {
+            XmlTag tag = currentNode.getTag();
 
-            if (tag.isComplexTypeDeclaration(parent)) {
+            if (tag.isComplexTypeDeclaration(parentNode)) {
                 continue;
             }
 
-            ParsingData childData = new ParsingData(parsingData);
+            ParsingData childData = new ParsingData(parentData);
 
-            CsvEntity csvEntity = new CsvEntity();
-            csvEntity.setFieldType(TYPES.get(tag.getName()));
-            csvEntity.setFieldName(node.getAttribute(XmlAttribute.NAME));
+            CsvEntity currentEntity = new CsvEntity();
+            currentEntity.setFieldType(TYPES.get(tag.getName()));
+            currentEntity.setFieldName(currentNode.getAttribute(XmlAttribute.NAME));
 
             switch (tag.getName()) {
                 case XmlTag.ELEMENT:
-                    parsingData.getTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
-                    childData.setTypeReceiver(csvEntity);
-                    childData.setCommentsReceiver(csvEntity);
-                    csvEntity.setConstraint(getConstraint(node));
+                    parentData.getTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
+                    childData.setTypeReceiver(currentEntity);
+                    childData.setCommentsReceiver(currentEntity);
+                    currentEntity.setConstraint(getConstraint(currentNode));
                     break;
 
                 case XmlTag.ATTRIBUTE:
-                    childData.setCommentsReceiver(csvEntity);
+                    childData.setCommentsReceiver(currentEntity);
                     break;
 
                 case XmlTag.DOCUMENTATION:
-                    parsingData.getCommentsReceiver().setComment(node.getFormattedTextValue());
+                    parentData.getCommentsReceiver().setComment(currentNode.getFormattedTextValue());
                     break;
 
                 case XmlTag.CHOICE:
@@ -70,32 +70,32 @@ public class Csv {
                     break;
             }
 
-            if (csvEntity.getFieldType() != null) {
-                entities.add(csvEntity);
+            if (currentEntity.getFieldType() != null) {
+                entities.add(currentEntity);
 
-                String number = String.format("%s%d.", parsingData.getPrefix(), parsingData.getCounter());
-                csvEntity.setNumber(number.substring(0, number.length() - 1));
+                String number = String.format("%s%d.", parentData.getPrefix(), parentData.getCounter());
+                currentEntity.setNumber(number.substring(0, number.length() - 1));
 
-                parsingData.setCounter(parsingData.getCounter() + 1);
+                parentData.setCounter(parentData.getCounter() + 1);
 
                 childData.setPrefix(number);
                 childData.setCounter(1);
             }
 
-            XmlNode type = getType(node);
+            XmlNode type = getType(currentNode);
             if (type != null) {
-                String typeName = node.getXmlLocalType();
+                String typeName = currentNode.getXmlLocalType();
 
-                if (parsingData.getTypeReceiver().getXmlType() == null) {
-                    parsingData.getTypeReceiver().setXmlType(typeName);
+                if (parentData.getTypeReceiver().getXmlType() == null) {
+                    parentData.getTypeReceiver().setXmlType(typeName);
                 } else {
-                    csvEntity.setXmlType(typeName);
+                    currentEntity.setXmlType(typeName);
                 }
 
                 parse(type, childData);
             }
 
-            parse(node, childData);
+            parse(currentNode, childData);
         }
     }
 
