@@ -24,6 +24,7 @@ public class MainWindow extends JFrame {
     private static final String CHOOSE_NODE = "Выберите узел";
 
     private static final double WINDOW_SIZE_SCALE = 8d / 10d;
+    private static final String ICON = "icon.png";
 
     private XsdSchema currentSchema;
 
@@ -41,7 +42,13 @@ public class MainWindow extends JFrame {
         createSaveBtn();
 
         setSizes();
+        setIcon();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private void setIcon() {
+        Image img = Toolkit.getDefaultToolkit().createImage(getClass().getResource(ICON));
+        setIconImage(img);
     }
 
     private void createChooseXsdBtn() {
