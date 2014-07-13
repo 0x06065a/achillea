@@ -16,8 +16,8 @@ public class XmlNode {
     private final XsdSchema schema;
     private String textValue;
 
-    public static final XmlNode EXTERNAL = new XmlNode(
-            null, null,
+    public static final XmlNode VOID = new XmlNode(
+            null, new XmlTag(),
             Collections.<String, String>emptyMap(),
             Collections.<XmlNode>emptyList()
     );
@@ -145,7 +145,7 @@ public class XmlNode {
             return null;
         }
 
-        return xmlType.replaceAll(".*?:", "");
+        return xmlType.replaceAll("^.*?:", "");
     }
 
     public static interface Predicate {

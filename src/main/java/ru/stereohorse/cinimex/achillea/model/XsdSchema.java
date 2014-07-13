@@ -66,7 +66,7 @@ public class XsdSchema {
 
         String xsdNamespace = namespaces.get(XSD_URI);
         for (String type : BUILT_IN_DATA_TYPES) {
-            xmlTypes.put(String.format("%s:%s", xsdNamespace, type), XmlNode.EXTERNAL);
+            xmlTypes.put(String.format("%s:%s", xsdNamespace, type), XmlNode.VOID);
         }
     }
 

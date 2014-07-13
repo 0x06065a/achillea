@@ -11,11 +11,12 @@ public class XmlTag {
     public static final String EXTENSION = "extension";
     public static final String DOCUMENTATION = "documentation";
     public static final String CHOICE = "choice";
+    private static final String VOID = "";
 
     private final String name;
 
     public XmlTag() {
-        this(null);
+        this(VOID);
     }
 
     public XmlTag(String name) {
@@ -24,10 +25,6 @@ public class XmlTag {
 
     public String getName() {
         return name;
-    }
-
-    public boolean isComplexTypeDeclaration(XmlNode parentNode) {
-        return COMPLEX_TYPE.equals(getName()) && !ELEMENT.equals(parentNode.getTag().getName());
     }
 
     @Override

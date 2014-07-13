@@ -28,74 +28,67 @@ public class Csv {
     }
 
     public Csv(XmlNode node) {
-        parse(node, new ParsingData());
+        parse(node, new ParsingData(), true);
     }
 
-    private void parse(XmlNode parentNode, ParsingData parentData) {
-        for (XmlNode currentNode : parentNode.getChildren()) {
-            XmlTag tag = currentNode.getTag();
+    private void parse(XmlNode currentNode, ParsingData currentData, boolean isRoot) {
+        XmlTag currentTag = currentNode.getTag();
 
-            if (tag.isComplexTypeDeclaration(parentNode)) {
-                continue;
-            }
+        CsvEntity currentEntity = new CsvEntity();
+        currentEntity.setFieldType(TYPES.get(currentTag.getName()));
+        currentEntity.setFieldName(currentNode.getAttribute(XmlAttribute.NAME));
 
-            ParsingData childData = new ParsingData(parentData);
+        ParsingData childData = new ParsingData(currentData);
 
-            CsvEntity currentEntity = new CsvEntity();
-            currentEntity.setFieldType(TYPES.get(tag.getName()));
-            currentEntity.setFieldName(currentNode.getAttribute(XmlAttribute.NAME));
+        switch (currentTag.getName()) {
+            case XmlTag.ELEMENT:
+                currentData.getXmlTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
+                currentData.setXmlTypeReceiver(currentEntity);
 
-            switch (tag.getName()) {
-                case XmlTag.ELEMENT:
-                    parentData.getTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
-                    childData.setTypeReceiver(currentEntity);
-                    childData.setCommentsReceiver(currentEntity);
-                    currentEntity.setConstraint(getConstraint(currentNode));
-                    break;
+                childData.setXmlTypeReceiver(currentEntity);
+                childData.setCommentsReceiver(currentEntity);
 
-                case XmlTag.ATTRIBUTE:
-                    childData.setCommentsReceiver(currentEntity);
-                    break;
+                currentEntity.setConstraint(getConstraint(currentNode));
+                break;
 
-                case XmlTag.DOCUMENTATION:
-                    parentData.getCommentsReceiver().setComment(currentNode.getFormattedTextValue());
-                    break;
+            case XmlTag.ATTRIBUTE:
+                currentData.setXmlTypeReceiver(currentEntity);
+                childData.setCommentsReceiver(currentEntity);
+                break;
 
-                case XmlTag.CHOICE:
-                    // childData.setPrefix(childData.getPrefix() + "(choice)");
-                    break;
+            case XmlTag.DOCUMENTATION:
+                currentData.getCommentsReceiver().setComment(currentNode.getFormattedTextValue());
+                break;
 
-                case XmlTag.EXTENSION:
-                    // childData.setPrefix();
-                    break;
-            }
+            case XmlTag.CHOICE:
+                childData.setNumber(new Number(currentData.getNumber()));
+                childData.getNumber().setChoice(true);
+                break;
 
-            if (currentEntity.getFieldType() != null) {
-                entities.add(currentEntity);
+            case XmlTag.EXTENSION:
+                // childData.setPrefix();
+                break;
+        }
 
-                String number = String.format("%s%d.", parentData.getPrefix(), parentData.getCounter());
-                currentEntity.setNumber(number.substring(0, number.length() - 1));
+        if (currentEntity.getFieldType() != null && !isRoot) {
+            entities.add(currentEntity);
 
-                parentData.setCounter(parentData.getCounter() + 1);
+            currentEntity.setNumber(currentData.getNumber().toString());
+            childData.setNumber(new Number(currentData.getNumber()));
+            currentData.getNumber().inc();
+        }
 
-                childData.setPrefix(number);
-                childData.setCounter(1);
-            }
+        XmlNode referencedTypeNode = getType(currentNode);
+        if (referencedTypeNode != null) {
+            parse(referencedTypeNode, new ParsingData(childData), false);
+        }
 
-            XmlNode type = getType(currentNode);
-            if (type != null) {
-                String typeName = currentNode.getXmlLocalType();
+        for (XmlNode childNode : currentNode.getChildren()) {
+            parse(childNode, new ParsingData(childData), false);
+        }
 
-                if (parentData.getTypeReceiver().getXmlType() == null) {
-                    parentData.getTypeReceiver().setXmlType(typeName);
-                } else {
-                    currentEntity.setXmlType(typeName);
-                }
-
-                parse(type, childData);
-            }
-
-            parse(currentNode, childData);
+        if (referencedTypeNode != null) {
+            currentData.getXmlTypeReceiver().setXmlType(currentNode.getXmlLocalType());
         }
     }
 
@@ -134,26 +127,25 @@ public class Csv {
     }
 
     private class ParsingData {
-        private CsvEntity typeReceiver = CsvEntity.DUMMY;
-        private CsvEntity commentsReceiver = CsvEntity.DUMMY;
-        private String prefix = "";
-        private int counter = 1;
+        private CsvEntity xmlTypeReceiver = CsvEntity.VOID;
+        private CsvEntity commentsReceiver = CsvEntity.VOID;
+        private Number number = new Number();
 
-        public ParsingData() {}
+        public ParsingData() {
+        }
 
         public ParsingData(ParsingData data) {
-            typeReceiver = data.typeReceiver;
+            xmlTypeReceiver = data.xmlTypeReceiver;
             commentsReceiver = data.commentsReceiver;
-            prefix = data.prefix;
-            counter = data.counter;
+            number = data.number;
         }
 
-        public CsvEntity getTypeReceiver() {
-            return typeReceiver;
+        public CsvEntity getXmlTypeReceiver() {
+            return xmlTypeReceiver;
         }
 
-        public void setTypeReceiver(CsvEntity typeReceiver) {
-            this.typeReceiver = typeReceiver;
+        public void setXmlTypeReceiver(CsvEntity typeReceiver) {
+            this.xmlTypeReceiver = typeReceiver;
         }
 
         public CsvEntity getCommentsReceiver() {
@@ -164,20 +156,44 @@ public class Csv {
             this.commentsReceiver = commentsReceiver;
         }
 
-        public String getPrefix() {
-            return prefix;
+        public Number getNumber() {
+            return number;
         }
 
-        public void setPrefix(String prefix) {
-            this.prefix = prefix;
+        public void setNumber(Number number) {
+            this.number = number;
+        }
+    }
+
+    public class Number {
+        private static final String NUMBER_FORMAT = "%s.%d";
+        private static final String CHOICE_FORMAT = "%s(choice%d)";
+
+        private String prefix = "";
+        private int counter = 1;
+        private boolean isChoice;
+
+        public Number() {
         }
 
-        public int getCounter() {
-            return counter;
+        public Number(Number number) {
+            prefix = number.toString();
+            counter = 1;
         }
 
-        public void setCounter(int counter) {
-            this.counter = counter;
+        @Override
+        public String toString() {
+            String str = String.format(isChoice ? CHOICE_FORMAT : NUMBER_FORMAT, prefix, counter);
+
+            return str.replaceAll("^\\.*", "");
+        }
+
+        public void inc() {
+            counter++;
+        }
+
+        public void setChoice(boolean isChoice) {
+            this.isChoice = isChoice;
         }
     }
 }

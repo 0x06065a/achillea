@@ -5,7 +5,7 @@ import com.google.common.base.Strings;
 
 public class CsvEntity {
     private static final String SEP = ";";
-    public static final CsvEntity DUMMY = new CsvEntity();
+    public static final CsvEntity VOID = new CsvEntity();
 
     private String number;
     private String fieldName;
@@ -40,10 +40,6 @@ public class CsvEntity {
 
     public String getFieldType() {
         return fieldType;
-    }
-
-    public String getXmlType() {
-        return xmlType;
     }
 
     @Override
