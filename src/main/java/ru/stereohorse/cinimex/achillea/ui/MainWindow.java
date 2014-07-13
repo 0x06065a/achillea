@@ -101,6 +101,8 @@ public class MainWindow extends JFrame {
                             JOptionPane.showMessageDialog(MainWindow.this, FILE_SAVED);
                         }
                     }
+
+                    Desktop.getDesktop().open(saveFileChooser.getSelectedFile().getParentFile());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
