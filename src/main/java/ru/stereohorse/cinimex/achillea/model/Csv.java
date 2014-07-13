@@ -62,7 +62,7 @@ public class Csv {
 
             case XmlTag.CHOICE:
                 childData.setNumber(new Number(currentData.getNumber()));
-                childData.getNumber().setChoice(true);
+                childData.getNumber().setChoiceTrue();
                 break;
 
             case XmlTag.EXTENSION:
@@ -192,8 +192,8 @@ public class Csv {
             counter++;
         }
 
-        public void setChoice(boolean isChoice) {
-            this.isChoice = isChoice;
+        public void setChoiceTrue() {
+            isChoice = true;
         }
     }
 }

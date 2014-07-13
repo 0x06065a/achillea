@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import static org.junit.Assert.assertEquals;
 
 public class XmlParsingTest {
-    public static final String TEST_RESOURCES_ENCODING = "utf-8";
+    private static final String TEST_RESOURCES_ENCODING = "utf-8";
 
     @Test
     public void testCreateLoanRequestComplexType() throws Exception {
