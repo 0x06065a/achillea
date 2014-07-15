@@ -8,12 +8,14 @@ import java.util.*;
 
 
 public class XmlNode {
+    private final XsdSchema schema;
     private final String tag;
+
+    private String textValue;
     private int line;
+
     private List<XmlNode> children;
     private final Map<String, String> attributes;
-    private final XsdSchema schema;
-    private String textValue;
 
     public static final XmlNode VOID = new XmlNode(
             null, Tag.VOID,
