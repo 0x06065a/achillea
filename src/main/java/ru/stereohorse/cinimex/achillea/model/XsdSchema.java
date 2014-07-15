@@ -53,8 +53,8 @@ public class XsdSchema {
         }
 
         for (XmlNode imp : imports) {
-            String schemaLocation = imp.getAttribute(XmlAttribute.SCHEMA_LOCATION);
-            String nsURI = imp.getAttribute(XmlAttribute.NAMESPACE);
+            String schemaLocation = imp.getAttribute(XmlNode.Attribute.SCHEMA_LOCATION);
+            String nsURI = imp.getAttribute(XmlNode.Attribute.NAMESPACE);
             String linkedSchemaNsPrefix = namespaces.get(nsURI);
 
             try {
@@ -95,7 +95,7 @@ public class XsdSchema {
     }
 
     private XmlNode parse(XMLEvent xmlEvent) {
-        XmlTag tag = new XmlTag(xmlEvent.asStartElement().getName().getLocalPart());
+        String tag = xmlEvent.asStartElement().getName().getLocalPart();
         XmlNode node = new XmlNode(this, tag);
 
         node.setAttributes(xmlEvent);
@@ -103,20 +103,20 @@ public class XsdSchema {
 
         parseNamespaces(xmlEvent);
 
-        if (tag.getName() != null) {
-            switch (tag.getName()) {
-                case XmlTag.COMPLEX_TYPE:
-                    String typeName = node.getAttribute(XmlAttribute.NAME);
+        if (tag != null) {
+            switch (tag) {
+                case XmlNode.Tag.COMPLEX_TYPE:
+                    String typeName = node.getAttribute(XmlNode.Attribute.NAME);
                     String prefix = Strings.isNullOrEmpty(nsPrefix) ? tnsPrefix : nsPrefix;
                     xmlTypes.put(String.format("%s:%s", prefix, typeName), node);
                     break;
 
-                case XmlTag.IMPORT:
+                case XmlNode.Tag.IMPORT:
                     imports.add(node);
                     break;
 
-                case XmlTag.SCHEMA:
-                    tnsPrefix = namespaces.get(node.getAttribute(XmlAttribute.TNS));
+                case XmlNode.Tag.SCHEMA:
+                    tnsPrefix = namespaces.get(node.getAttribute(XmlNode.Attribute.TNS));
                     break;
             }
         }

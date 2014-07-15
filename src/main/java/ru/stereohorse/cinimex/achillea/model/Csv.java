@@ -22,9 +22,9 @@ public class Csv {
     private final List<CsvEntity> entities = new ArrayList<>();
 
     static {
-        TYPES.put(XmlTag.ATTRIBUTE, "атрибут");
-        TYPES.put(XmlTag.ELEMENT, "элемент");
-        TYPES.put(XmlTag.SECTION, "секция");
+        TYPES.put(XmlNode.Tag.ATTRIBUTE, "атрибут");
+        TYPES.put(XmlNode.Tag.ELEMENT, "элемент");
+        TYPES.put(XmlNode.Tag.SECTION, "секция");
     }
 
     public Csv(XmlNode node) {
@@ -32,17 +32,17 @@ public class Csv {
     }
 
     private void parse(XmlNode currentNode, ParsingData currentData, boolean isRoot) {
-        XmlTag currentTag = currentNode.getTag();
+        String currentTag = currentNode.getTag();
 
         CsvEntity currentEntity = new CsvEntity();
-        currentEntity.setFieldType(TYPES.get(currentTag.getName()));
-        currentEntity.setFieldName(currentNode.getAttribute(XmlAttribute.NAME));
+        currentEntity.setFieldType(TYPES.get(currentTag));
+        currentEntity.setFieldName(currentNode.getAttribute(XmlNode.Attribute.NAME));
 
         ParsingData childData = new ParsingData(currentData);
 
-        switch (currentTag.getName()) {
-            case XmlTag.ELEMENT:
-                currentData.getXmlTypeReceiver().setFieldType(TYPES.get(XmlTag.SECTION));
+        switch (currentTag) {
+            case XmlNode.Tag.ELEMENT:
+                currentData.getXmlTypeReceiver().setFieldType(TYPES.get(XmlNode.Tag.SECTION));
                 currentData.setXmlTypeReceiver(currentEntity);
 
                 childData.setXmlTypeReceiver(currentEntity);
@@ -51,21 +51,21 @@ public class Csv {
                 currentEntity.setConstraint(getConstraint(currentNode));
                 break;
 
-            case XmlTag.ATTRIBUTE:
+            case XmlNode.Tag.ATTRIBUTE:
                 currentData.setXmlTypeReceiver(currentEntity);
                 childData.setCommentsReceiver(currentEntity);
                 break;
 
-            case XmlTag.DOCUMENTATION:
+            case XmlNode.Tag.DOCUMENTATION:
                 currentData.getCommentsReceiver().setComment(currentNode.getFormattedTextValue());
                 break;
 
-            case XmlTag.CHOICE:
+            case XmlNode.Tag.CHOICE:
                 childData.setNumber(new Number(currentData.getNumber()));
                 childData.getNumber().setChoiceTrue();
                 break;
 
-            case XmlTag.EXTENSION:
+            case XmlNode.Tag.EXTENSION:
                 // childData.setPrefix();
                 break;
         }
@@ -93,8 +93,8 @@ public class Csv {
     }
 
     private String getConstraint(XmlNode child) {
-        String minOccurs = child.getAttribute(XmlAttribute.MIN_OCCURS, DEFAULT_MIN_OCCURS);
-        String maxOccurs = child.getAttribute(XmlAttribute.MAX_OCCURS, DEFAULT_MAX_OCCURS);
+        String minOccurs = child.getAttribute(XmlNode.Attribute.MIN_OCCURS, DEFAULT_MIN_OCCURS);
+        String maxOccurs = child.getAttribute(XmlNode.Attribute.MAX_OCCURS, DEFAULT_MAX_OCCURS);
         maxOccurs = maxOccurs.replace(UNBOUNDED_XML, UNBOUNDED_CSV);
 
         return String.format("%s..%s", minOccurs, maxOccurs);

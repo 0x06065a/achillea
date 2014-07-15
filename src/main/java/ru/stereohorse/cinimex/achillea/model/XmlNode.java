@@ -2,14 +2,13 @@ package ru.stereohorse.cinimex.achillea.model;
 
 import com.google.common.base.Strings;
 
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.util.*;
 
 
 public class XmlNode {
-    private final XmlTag tag;
+    private final String tag;
     private int line;
     private List<XmlNode> children;
     private final Map<String, String> attributes;
@@ -17,20 +16,20 @@ public class XmlNode {
     private String textValue;
 
     public static final XmlNode VOID = new XmlNode(
-            null, new XmlTag(),
+            null, Tag.VOID,
             Collections.<String, String>emptyMap(),
             Collections.<XmlNode>emptyList()
     );
 
     public XmlNode(XsdSchema schema) {
-        this(schema, new XmlTag());
+        this(schema, Tag.VOID);
     }
 
-    public XmlNode(XsdSchema schema, XmlTag tag) {
+    public XmlNode(XsdSchema schema, String tag) {
         this(schema, tag, new HashMap<String, String>(), null);
     }
 
-    private XmlNode(XsdSchema schema, XmlTag tag, Map<String, String> attributes, List<XmlNode> children) {
+    private XmlNode(XsdSchema schema, String tag, Map<String, String> attributes, List<XmlNode> children) {
         this.tag = tag;
         this.schema = schema;
         this.attributes = attributes;
@@ -49,7 +48,7 @@ public class XmlNode {
         return schema;
     }
 
-    public XmlTag getTag() {
+    public String getTag() {
         return tag;
     }
 
@@ -90,7 +89,7 @@ public class XmlNode {
         StartElement stElement = xmlEvent.asStartElement();
         Iterator attributes = stElement.getAttributes();
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
+            javax.xml.stream.events.Attribute attribute = (javax.xml.stream.events.Attribute) attributes.next();
             this.attributes.put(attribute.getName().getLocalPart(), attribute.getValue());
         }
     }
@@ -134,7 +133,7 @@ public class XmlNode {
         return getNode(name, new Predicate() {
             @Override
             public boolean satisfies(XmlNode node, String condition) {
-                return condition.equals(node.attributes.get(XmlAttribute.NAME));
+                return condition.equals(node.attributes.get(XmlNode.Attribute.NAME));
             }
         });
     }
@@ -153,9 +152,9 @@ public class XmlNode {
     }
 
     public String getXmlType() {
-        String xmlType = attributes.get(XmlAttribute.TYPE);
+        String xmlType = attributes.get(XmlNode.Attribute.TYPE);
         if (Strings.isNullOrEmpty(xmlType)) {
-            xmlType = attributes.get(XmlAttribute.BASE);
+            xmlType = attributes.get(XmlNode.Attribute.BASE);
         }
 
         if (Strings.isNullOrEmpty(xmlType)) {
@@ -178,5 +177,29 @@ public class XmlNode {
         }
 
         return xmlType;
+    }
+
+    public static class Tag {
+        public static final String ELEMENT = "element";
+        public static final String COMPLEX_TYPE = "complexType";
+        public static final String IMPORT = "import";
+        public static final String SCHEMA = "schema";
+        public static final String ATTRIBUTE = "attribute";
+        public static final String SECTION = "section";
+        public static final String EXTENSION = "extension";
+        public static final String DOCUMENTATION = "documentation";
+        public static final String CHOICE = "choice";
+        private static final String VOID = "";
+    }
+
+    public static class Attribute {
+        public static final String NAME = "name";
+        public static final String SCHEMA_LOCATION = "schemaLocation";
+        public static final String BASE = "base";
+        public static final String NAMESPACE = "namespace";
+        public static final String TYPE = "type";
+        public static final String TNS = "targetNamespace";
+        public static final String MIN_OCCURS = "minOccurs";
+        public static final String MAX_OCCURS = "maxOccurs";
     }
 }
