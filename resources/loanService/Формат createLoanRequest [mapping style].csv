@@ -1,0 +1,12 @@
+Название поля;Тип поля;Тип;Обяз.;Комментарий
+attribute1;аттрибут;;0..1;
+attribute2;аттрибут;boolean;0..1;Аттрибут 2 типа boolean
+productId.objectType;элемент;string;0..1;
+productId.objectType.attribute3;аттрибут;decimal;0..1;
+productId.idType;элемент;string;0..1;
+productId.stringId;элемент;string;0..1;
+productId.fmaId.brca;элемент;string;1..1;
+productId.fmaId.ccy;элемент;string;0..1;
+productId.fmaId.cnum;элемент;string;0..1;
+productId.fmaId.acod;элемент;string;0..1;
+productId.fmaId.acsq;элемент;string;0..1;

@@ -1,7 +1,7 @@
 Номер;Название поля;Тип поля;Тип;Обяз.;Комментарий
 1;productId;секция;ct_ProductId;0..n;Идентификаторы продукта
 1.1;objectType;элемент;string;0..1;
-1.1.1;attribute3;атрибут;decimal;;
+1.1.1;attribute3;атрибут;decimal;0..1;
 1.2;idType;элемент;string;0..1;
 1.3(choice1);stringId;элемент;string;0..1;
 1.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -12,7 +12,7 @@
 1.3(choice2).5;acsq;элемент;string;0..1;
 2;parentProductId;секция;ct_ProductId;0..n;1.0.2 - objectType made optional (minOccurs="0").
 2.1;objectType;элемент;string;0..1;
-2.1.1;attribute3;атрибут;decimal;;
+2.1.1;attribute3;атрибут;decimal;0..1;
 2.2;idType;элемент;string;0..1;
 2.3(choice1);stringId;элемент;string;0..1;
 2.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -59,7 +59,7 @@
 16.1(choice1).5;certificate;элемент;string;0..1;
 16.1(choice1).6;parentProductId;секция;ct_ProductId;0..1;1.0.2 - objectType made optional (minOccurs="0").
 16.1(choice1).6.1;objectType;элемент;string;0..1;
-16.1(choice1).6.1.1;attribute3;атрибут;decimal;;
+16.1(choice1).6.1.1;attribute3;атрибут;decimal;0..1;
 16.1(choice1).6.2;idType;элемент;string;0..1;
 16.1(choice1).6.3(choice1);stringId;элемент;string;0..1;
 16.1(choice1).6.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -81,7 +81,7 @@
 16.1(choice2).5;certificate;элемент;string;0..1;
 16.1(choice2).6;parentProductId;секция;ct_ProductId;0..1;1.0.2 - objectType made optional (minOccurs="0").
 16.1(choice2).6.1;objectType;элемент;string;0..1;
-16.1(choice2).6.1.1;attribute3;атрибут;decimal;;
+16.1(choice2).6.1.1;attribute3;атрибут;decimal;0..1;
 16.1(choice2).6.2;idType;элемент;string;0..1;
 16.1(choice2).6.3(choice1);stringId;элемент;string;0..1;
 16.1(choice2).6.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -180,7 +180,7 @@
 29.3;penalty;элемент;decimal;0..1;Начисленные пени
 29.4;debtId;секция;ct_ProductId;0..n;Идентификатор задолженности
 29.4.1;objectType;элемент;string;0..1;
-29.4.1.1;attribute3;атрибут;decimal;;
+29.4.1.1;attribute3;атрибут;decimal;0..1;
 29.4.2;idType;элемент;string;0..1;
 29.4.3(choice1);stringId;элемент;string;0..1;
 29.4.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -191,7 +191,7 @@
 29.4.3(choice2).5;acsq;элемент;string;0..1;
 30;accountId;секция;ct_ProductId;0..n;Счета договора
 30.1;objectType;элемент;string;0..1;
-30.1.1;attribute3;атрибут;decimal;;
+30.1.1;attribute3;атрибут;decimal;0..1;
 30.2;idType;элемент;string;0..1;
 30.3(choice1);stringId;элемент;string;0..1;
 30.3(choice2);fmaId;секция;ct_FmaId;0..1;
@@ -230,5 +230,5 @@
 44;appraisalCompany;элемент;string;0..1;Ипотека:Наименование независимого оценщика
 45;notaryCompany;элемент;string;0..1;Ипотека:Наименование нотариуса/юридической фирмы
 46;hasInsurance;элемент;boolean;0..1;Ипотека:Наличие Страховки
-47;attribute1;атрибут;;;
-48;attribute2;атрибут;boolean;;Аттрибут 2 типа boolean
+47;attribute1;атрибут;;0..1;
+48;attribute2;атрибут;boolean;0..1;Аттрибут 2 типа boolean

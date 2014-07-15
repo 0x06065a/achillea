@@ -1,0 +1,196 @@
+Название поля;Тип поля;Тип;Обяз.;Комментарий
+productId.objectType;элемент;string;0..1;
+productId.objectType.attribute3;атрибут;decimal;0..1;
+productId.idType;элемент;string;0..1;
+productId.stringId;элемент;string;0..1;
+productId.fmaId.brca;элемент;string;1..1;
+productId.fmaId.ccy;элемент;string;0..1;
+productId.fmaId.cnum;элемент;string;0..1;
+productId.fmaId.acod;элемент;string;0..1;
+productId.fmaId.acsq;элемент;string;0..1;
+parentProductId.objectType;элемент;string;0..1;
+parentProductId.objectType.attribute3;атрибут;decimal;0..1;
+parentProductId.idType;элемент;string;0..1;
+parentProductId.stringId;элемент;string;0..1;
+parentProductId.fmaId.brca;элемент;string;1..1;
+parentProductId.fmaId.ccy;элемент;string;0..1;
+parentProductId.fmaId.cnum;элемент;string;0..1;
+parentProductId.fmaId.acod;элемент;string;0..1;
+parentProductId.fmaId.acsq;элемент;string;0..1;
+type;элемент;string;0..1;
+name;элемент;string;0..1;
+clientId.systemId;элемент;string;1..1;
+clientId.systemName;элемент;string;0..1;
+clientId.objectId;элемент;string;1..1;
+status;элемент;string;0..1;
+openDate;элемент;date;0..1;
+expiryDate;элемент;date;0..1;
+closeDate;элемент;date;0..1;
+hasPoA;элемент;boolean;0..1;
+termPoA;элемент;date;0..1;
+tariffType;элемент;string;0..1;
+registrationData.branch.code;элемент;string;1..1;
+registrationData.branch.name;элемент;string;0..1;
+registrationData.userid;элемент;string;0..1;
+registrationData.date;элемент;date;0..1;
+comment;элемент;string;0..1;
+additionalServices.type;элемент;string;1..1;
+additionalServices.value;элемент;boolean;0..1;
+additionalServices.comment;элемент;string;0..1;
+additionalProducts.AdditionalProduct.id.systemId;элемент;string;1..1;
+additionalProducts.AdditionalProduct.id.systemName;элемент;string;0..1;
+additionalProducts.AdditionalProduct.id.objectId;элемент;string;1..1;
+additionalProducts.AdditionalProduct.type;элемент;string;0..1;
+additionalProducts.AdditionalProduct.companyName;элемент;string;0..1;
+additionalProducts.AdditionalProduct.premium.currency;элемент;string;0..1;
+additionalProducts.AdditionalProduct.premium.amount;элемент;decimal;1..1;
+additionalProducts.AdditionalProduct.certificate;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.objectType;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.objectType.attribute3;атрибут;decimal;0..1;
+additionalProducts.AdditionalProduct.parentProductId.idType;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.stringId;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.fmaId.brca;элемент;string;1..1;
+additionalProducts.AdditionalProduct.parentProductId.fmaId.ccy;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.fmaId.cnum;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.fmaId.acod;элемент;string;0..1;
+additionalProducts.AdditionalProduct.parentProductId.fmaId.acsq;элемент;string;0..1;
+additionalProducts.Insurance.id.systemId;элемент;string;1..1;
+additionalProducts.Insurance.id.systemName;элемент;string;0..1;
+additionalProducts.Insurance.id.objectId;элемент;string;1..1;
+additionalProducts.Insurance.type;элемент;string;0..1;
+additionalProducts.Insurance.companyName;элемент;string;0..1;
+additionalProducts.Insurance.premium.currency;элемент;string;0..1;
+additionalProducts.Insurance.premium.amount;элемент;decimal;1..1;
+additionalProducts.Insurance.certificate;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.objectType;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.objectType.attribute3;атрибут;decimal;0..1;
+additionalProducts.Insurance.parentProductId.idType;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.stringId;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.fmaId.brca;элемент;string;1..1;
+additionalProducts.Insurance.parentProductId.fmaId.ccy;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.fmaId.cnum;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.fmaId.acod;элемент;string;0..1;
+additionalProducts.Insurance.parentProductId.fmaId.acsq;элемент;string;0..1;
+additionalProducts.Insurance.lastPremium.currency;элемент;string;0..1;
+additionalProducts.Insurance.lastPremium.amount;элемент;decimal;1..1;
+additionalProducts.Insurance.premiumRate;элемент;decimal;0..1;
+additionalProducts.Insurance.isConnected;элемент;boolean;0..1;
+customFields.name;элемент;string;1..1;
+customFields.value;элемент;string;0..1;
+contacts.kind;элемент;string;1..1;
+contacts.isNotification;элемент;boolean;0..1;
+contacts.Phone.type;элемент;string;0..1;
+contacts.Phone.category;элемент;string;0..1;
+contacts.Phone.countryCode;элемент;string;0..1;
+contacts.Phone.areaCode;элемент;string;0..1;
+contacts.Phone.phoneNumber;элемент;string;0..1;
+contacts.Phone.extension;элемент;string;0..1;
+contacts.Phone.operatorName;элемент;string;0..1;
+contacts.Phone.operatorRegion;элемент;string;0..1;
+contacts.Phone.comment;элемент;string;0..1;
+contacts.Email.email;элемент;string;0..1;
+contacts.Email.comment;элемент;string;0..1;
+contacts.Address.type;элемент;string;1..1;
+contacts.Address.freeAddress.country;элемент;string;0..1;
+contacts.Address.freeAddress.postCode;элемент;string;0..1;
+contacts.Address.freeAddress.regionType;элемент;string;0..1;
+contacts.Address.freeAddress.region;элемент;string;0..1;
+contacts.Address.freeAddress.districtType;элемент;string;0..1;
+contacts.Address.freeAddress.district;элемент;string;0..1;
+contacts.Address.freeAddress.cityType;элемент;string;0..1;
+contacts.Address.freeAddress.city;элемент;string;0..1;
+contacts.Address.freeAddress.settlementType;элемент;string;0..1;
+contacts.Address.freeAddress.settlement;элемент;string;0..1;
+contacts.Address.freeAddress.streetType;элемент;string;0..1;
+contacts.Address.freeAddress.street;элемент;string;0..1;
+contacts.Address.freeAddress.house;элемент;string;0..1;
+contacts.Address.freeAddress.building;элемент;string;0..1;
+contacts.Address.freeAddress.apartment;элемент;string;0..1;
+contacts.Address.kladrAddress.country;элемент;string;0..1;
+contacts.Address.kladrAddress.postCode;элемент;string;0..1;
+contacts.Address.kladrAddress.regionType;элемент;string;0..1;
+contacts.Address.kladrAddress.region;элемент;string;0..1;
+contacts.Address.kladrAddress.districtType;элемент;string;0..1;
+contacts.Address.kladrAddress.district;элемент;string;0..1;
+contacts.Address.kladrAddress.cityType;элемент;string;0..1;
+contacts.Address.kladrAddress.city;элемент;string;0..1;
+contacts.Address.kladrAddress.settlementType;элемент;string;0..1;
+contacts.Address.kladrAddress.settlement;элемент;string;0..1;
+contacts.Address.kladrAddress.streetType;элемент;string;0..1;
+contacts.Address.kladrAddress.street;элемент;string;0..1;
+contacts.Address.kladrAddress.house;элемент;string;0..1;
+contacts.Address.kladrAddress.building;элемент;string;0..1;
+contacts.Address.kladrAddress.apartment;элемент;string;0..1;
+contacts.Address.kladrAddress.regionCode;элемент;string;0..1;
+contacts.Address.kladrAddress.districtCode;элемент;string;0..1;
+contacts.Address.kladrAddress.cityCode;элемент;string;0..1;
+contacts.Address.kladrAddress.settlementCode;элемент;string;0..1;
+contacts.Address.kladrAddress.streetCode;элемент;string;0..1;
+contacts.Address.stringAddress;элемент;string;0..1;
+contacts.Address.comment;элемент;string;0..1;
+productType.typeCode;элемент;;1..1;Identifier of product type. Currently the following types are supported: "FrontType", "DealType", "ProductCode".
+productType.typeValue;элемент;string;1..1;
+productType.subtypeValue;элемент;string;0..1;
+argeementNumber;элемент;string;0..1;
+agreementDate;элемент;date;0..1;
+currencyCode;элемент;string;0..1;Валюта договора
+principalAmount;элемент;decimal;0..1;Первоначальная сумма кредита(выданная сумма)
+loanRate.rateCode;элемент;string;1..1;Тип ставки
+loanRate.valueType;элемент;string;0..1;Тип значения
+loanRate.rateValue;элемент;decimal;0..1;Значение
+repaymentDay;элемент;integer;0..1;День погашения
+repaymentNextDate;элемент;date;0..1;Дата следующего платежа
+monthlyPayAmount;элемент;decimal;0..1;Полная сумма ежемесячного платежа
+payFee.rateCode;элемент;string;1..1;Тип ставки
+payFee.valueType;элемент;string;0..1;Тип значения
+payFee.rateValue;элемент;decimal;0..1;Значение
+Debt.debtType;элемент;string;0..1;Тип задолженности
+Debt.amount;элемент;decimal;0..1;Сумма задолжености
+Debt.penalty;элемент;decimal;0..1;Начисленные пени
+Debt.debtId.objectType;элемент;string;0..1;
+Debt.debtId.objectType.attribute3;атрибут;decimal;0..1;
+Debt.debtId.idType;элемент;string;0..1;
+Debt.debtId.stringId;элемент;string;0..1;
+Debt.debtId.fmaId.brca;элемент;string;1..1;
+Debt.debtId.fmaId.ccy;элемент;string;0..1;
+Debt.debtId.fmaId.cnum;элемент;string;0..1;
+Debt.debtId.fmaId.acod;элемент;string;0..1;
+Debt.debtId.fmaId.acsq;элемент;string;0..1;
+accountId.objectType;элемент;string;0..1;
+accountId.objectType.attribute3;атрибут;decimal;0..1;
+accountId.idType;элемент;string;0..1;
+accountId.stringId;элемент;string;0..1;
+accountId.fmaId.brca;элемент;string;1..1;
+accountId.fmaId.ccy;элемент;string;0..1;
+accountId.fmaId.cnum;элемент;string;0..1;
+accountId.fmaId.acod;элемент;string;0..1;
+accountId.fmaId.acsq;элемент;string;0..1;
+transferred;элемент;boolean;0..1;Признак кредита, переведенного из АБС
+restructured;элемент;boolean;0..1;Признак реструктуризированного кредита
+secured;элемент;boolean;0..1;Признак секьютиризации
+manager;элемент;string;0..1;Сотрудник, сопровождающий сделку
+bankName;элемент;string;0..1;Банк, заключивший договор 
+earlyRepay.ersZone;элемент;string;0..1;Зона обслуживания (кто может производить досрочное погашение - КАД или Фронт-офис)
+earlyRepay.earlyRepayFee.rateCode;элемент;string;1..1;Тип ставки
+earlyRepay.earlyRepayFee.valueType;элемент;string;0..1;Тип значения
+earlyRepay.earlyRepayFee.rateValue;элемент;decimal;0..1;Значение
+earlyRepay.ersFeeEndDate;элемент;date;0..1;Дата окончания действия комиссии за досрочное погашение
+earlyRepay.minEarlyRepayAmount;элемент;decimal;0..1;Минимальная сумма досрочного погашения
+earlyRepay.moratoriumSign;элемент;boolean;0..1;Мораторий: флаг наличия моратория
+earlyRepay.moratoriumEndDate;элемент;date;0..1;Дата окончания моратория
+earlyRepay.hasScheduleFixed;элемент;boolean;0..1;Признак: График погашения – часть договора
+earlyRepay.hasTermFlex;элемент;boolean;0..1;Признак: Возможность сокращения срока
+repaymentFirstDate;элемент;date;0..1;Дата первого платежа
+repaymentFirstPayType;элемент;string;0..1;Тип первого платежа
+hasCoborrower;элемент;boolean;0..1;Признак наличия созаемщиков
+coborrowerId.systemId;элемент;string;1..1;
+coborrowerId.systemName;элемент;string;0..1;
+coborrowerId.objectId;элемент;string;1..1;
+appraisalAmount;элемент;decimal;0..1;Ипотека:Сумма Оценки
+notaryAmount;элемент;decimal;0..1;Ипотека:Сумма за Нотариус/Юридическая фирма
+lockBoxAmount;элемент;decimal;0..1;Ипотека:Сумма за  Аренду сейфовой ячейки/аккредитив
+appraisalCompany;элемент;string;0..1;Ипотека:Наименование независимого оценщика
+notaryCompany;элемент;string;0..1;Ипотека:Наименование нотариуса/юридической фирмы
+hasInsurance;элемент;boolean;0..1;Ипотека:Наличие Страховки
+attribute1;атрибут;;0..1;
+attribute2;атрибут;boolean;0..1;Аттрибут 2 типа boolean

@@ -4,6 +4,9 @@ package ru.stereohorse.cinimex.achillea.ui;
 import ru.stereohorse.cinimex.achillea.model.Csv;
 import ru.stereohorse.cinimex.achillea.model.XmlNode;
 import ru.stereohorse.cinimex.achillea.model.XsdSchema;
+import ru.stereohorse.cinimex.achillea.model.formats.CsvFormatter;
+import ru.stereohorse.cinimex.achillea.model.formats.FullFormat;
+import ru.stereohorse.cinimex.achillea.model.formats.MappingStyleFormat;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,7 +20,8 @@ import java.io.*;
 public class MainWindow extends JFrame {
     private static final String WINDOW_TITLE = "Achillea";
     private static final String BTN_OPEN_TITLE = "Открыть XSD";
-    private static final String BTN_SAVE_TITLE = "Сохранить CSV";
+    private static final String BTN_SAVE_FULL_TITLE = "Сохранить полную CSV";
+    private static final String BTN_SAVE_MAPPING_STYLE_TITLE = "Сохранить короткую CSV";
 
     private static final String FILE_SAVED = "CSV-файл сохранен";
     private static final String CHOOSE_XSD = "Выберите XSD-схему";
@@ -39,7 +43,7 @@ public class MainWindow extends JFrame {
 
         createChooseXsdBtn();
         createChooseElementTree();
-        createSaveBtn();
+        createSaveButtons();
 
         setSizes();
         setIcon();
@@ -79,45 +83,19 @@ public class MainWindow extends JFrame {
         this.getContentPane().add(new JScrollPane(xsdTree));
     }
 
-    private void createSaveBtn() {
-        JButton btnSave = new JButton(BTN_SAVE_TITLE);
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                if (currentSchema == null) {
-                    JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_XSD, null, JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
+    private void createSaveButtons() {
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
 
-                DefaultMutableTreeNode treeSelection = (DefaultMutableTreeNode) xsdTree.getLastSelectedPathComponent();
-                if (treeSelection == null) {
-                    JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_NODE, null, JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
+        JButton btnSaveInFullFormat = new JButton(BTN_SAVE_FULL_TITLE);
+        btnSaveInFullFormat.addActionListener(new SaveAction(new FullFormat()));
+        buttonsPanel.add(btnSaveInFullFormat);
 
-                try {
-                    Csv csv = new Csv((XmlNode)treeSelection.getUserObject());
+        JButton btnSaveInMappingStyle = new JButton(BTN_SAVE_MAPPING_STYLE_TITLE);
+        btnSaveInMappingStyle.addActionListener(new SaveAction(new MappingStyleFormat()));
+        buttonsPanel.add(btnSaveInMappingStyle);
 
-                    if (saveFileChooser.showSaveDialog(MainWindow.this) != JFileChooser.APPROVE_OPTION) {
-                        return;
-                    }
-
-                    try (OutputStream out = new BufferedOutputStream(new FileOutputStream(saveFileChooser.getSelectedFile()))) {
-                        try (OutputStreamWriter writer = new OutputStreamWriter(out)) {
-                            writer.write(csv.toString());
-                            JOptionPane.showMessageDialog(MainWindow.this, FILE_SAVED);
-                        }
-                    }
-
-                    Desktop.getDesktop().open(saveFileChooser.getSelectedFile().getParentFile());
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        this.getContentPane().add(btnSave);
+        this.getContentPane().add(buttonsPanel);
     }
 
     private void setSizes() {
@@ -136,5 +114,47 @@ public class MainWindow extends JFrame {
         }
 
         return treeNode;
+    }
+
+    private class SaveAction implements ActionListener {
+        private CsvFormatter formatter;
+
+        public SaveAction(CsvFormatter formatter) {
+            this.formatter = formatter;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if (currentSchema == null) {
+                JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_XSD, null, JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            DefaultMutableTreeNode treeSelection = (DefaultMutableTreeNode) xsdTree.getLastSelectedPathComponent();
+            if (treeSelection == null) {
+                JOptionPane.showMessageDialog(MainWindow.this, CHOOSE_NODE, null, JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            try {
+                Csv csv = new Csv((XmlNode)treeSelection.getUserObject());
+
+                if (saveFileChooser.showSaveDialog(MainWindow.this) != JFileChooser.APPROVE_OPTION) {
+                    return;
+                }
+
+                try (OutputStream out = new BufferedOutputStream(new FileOutputStream(saveFileChooser.getSelectedFile()))) {
+                    try (OutputStreamWriter writer = new OutputStreamWriter(out)) {
+                        writer.write(formatter.format(csv));
+                        JOptionPane.showMessageDialog(MainWindow.this, FILE_SAVED);
+                    }
+                }
+
+                Desktop.getDesktop().open(saveFileChooser.getSelectedFile().getParentFile());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        }
     }
 }

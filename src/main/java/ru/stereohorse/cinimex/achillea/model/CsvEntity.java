@@ -4,7 +4,6 @@ package ru.stereohorse.cinimex.achillea.model;
 import com.google.common.base.Strings;
 
 public class CsvEntity {
-    private static final String SEP = ";";
     public static final CsvEntity VOID = new CsvEntity();
 
     private String number;
@@ -13,6 +12,7 @@ public class CsvEntity {
     private String xmlType;
     private String constraint;
     private String comment;
+    private String path;
 
     public void setNumber(String number) {
         this.number = number;
@@ -42,13 +42,41 @@ public class CsvEntity {
         return fieldType;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public String getXmlType() {
+        return xmlType;
+    }
+
+    public String getConstraint() {
+        return constraint;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
     @Override
     public String toString() {
-        String[] values = new String[] {number, fieldName, fieldType, xmlType, constraint, comment};
+        String[] values = new String[] {number, fieldName, path, fieldType, xmlType, constraint, comment};
         StringBuilder sb = new StringBuilder();
 
         for (String value : values) {
-            sb.append(SEP).append(Strings.nullToEmpty(value));
+            sb.append(Csv.SEP).append(Strings.nullToEmpty(value));
         }
 
         return sb.toString().substring(1);

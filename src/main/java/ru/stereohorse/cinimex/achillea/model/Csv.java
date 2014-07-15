@@ -7,15 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 public class Csv {
-    private static final String HEADER = "Номер;Название поля;Тип поля;Тип;Обяз.;Комментарий";
     private static final String ERR_FMT_NO_DECLARATION = "No declaration for type [%s] referenced at [%s:%d]";
 
     private static final String DEFAULT_MIN_OCCURS = "1";
     private static final String DEFAULT_MAX_OCCURS = "1";
     private static final String UNBOUNDED_XML = "unbounded";
     private static final String UNBOUNDED_CSV = "n";
+    private static final String CONSTRAINT_FMT = "%s..%s";
+    private static final String ATTR_CONSTRAINT = "0..1";
 
-    private static final String NEW_LINE = String.format("%n");
+    private static final String NUMBER_FORMAT = "%s.%d";
+    private static final String CHOICE_FORMAT = "%s(choice%d)";
+    private static final String PATH_SEP = ".";
+
+    public static final String NEW_LINE = String.format("%n");
+    public static final String SEP = ";";
 
     private static final Map<String, String> TYPES = new HashMap<>();
 
@@ -54,6 +60,7 @@ public class Csv {
             case XmlNode.Tag.ATTRIBUTE:
                 currentData.setXmlTypeReceiver(currentEntity);
                 childData.setCommentsReceiver(currentEntity);
+                currentEntity.setConstraint(ATTR_CONSTRAINT);
                 break;
 
             case XmlNode.Tag.DOCUMENTATION:
@@ -64,17 +71,18 @@ public class Csv {
                 childData.setNumber(new Number(currentData.getNumber()));
                 childData.getNumber().setChoiceTrue();
                 break;
-
-            case XmlNode.Tag.EXTENSION:
-                // childData.setPrefix();
-                break;
         }
 
         if (currentEntity.getFieldType() != null && !isRoot) {
             entities.add(currentEntity);
 
-            currentEntity.setNumber(currentData.getNumber().toString());
+            currentData.appendToPath(currentEntity.getFieldName());
+            currentEntity.setPath(currentData.getPathStr());
+
             childData.setNumber(new Number(currentData.getNumber()));
+            childData.setPath(new StringBuilder(currentData.getPath()));
+
+            currentEntity.setNumber(currentData.getNumber().toString());
             currentData.getNumber().inc();
         }
 
@@ -97,7 +105,7 @@ public class Csv {
         String maxOccurs = child.getAttribute(XmlNode.Attribute.MAX_OCCURS, DEFAULT_MAX_OCCURS);
         maxOccurs = maxOccurs.replace(UNBOUNDED_XML, UNBOUNDED_CSV);
 
-        return String.format("%s..%s", minOccurs, maxOccurs);
+        return String.format(CONSTRAINT_FMT, minOccurs, maxOccurs);
     }
 
     private XmlNode getType(XmlNode node) {
@@ -116,20 +124,11 @@ public class Csv {
         return typeDeclaration;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb =  new StringBuilder(HEADER).append(NEW_LINE);
-        for (CsvEntity entity : entities) {
-            sb.append(entity).append(NEW_LINE);
-        }
-
-        return sb.toString();
-    }
-
     private class ParsingData {
         private CsvEntity xmlTypeReceiver = CsvEntity.VOID;
         private CsvEntity commentsReceiver = CsvEntity.VOID;
         private Number number = new Number();
+        private StringBuilder path = new StringBuilder();
 
         public ParsingData() {
         }
@@ -138,6 +137,7 @@ public class Csv {
             xmlTypeReceiver = data.xmlTypeReceiver;
             commentsReceiver = data.commentsReceiver;
             number = data.number;
+            path = new StringBuilder(data.path);
         }
 
         public CsvEntity getXmlTypeReceiver() {
@@ -163,12 +163,25 @@ public class Csv {
         public void setNumber(Number number) {
             this.number = number;
         }
+
+        public StringBuilder getPath() {
+            return path;
+        }
+
+        public void setPath(StringBuilder path) {
+            this.path = path;
+        }
+
+        public String getPathStr() {
+            return path.substring(1);
+        }
+
+        public void appendToPath(String pathElement) {
+            path.append(PATH_SEP).append(pathElement);
+        }
     }
 
     public class Number {
-        private static final String NUMBER_FORMAT = "%s.%d";
-        private static final String CHOICE_FORMAT = "%s(choice%d)";
-
         private String prefix = "";
         private int counter = 1;
         private boolean isChoice;
@@ -195,5 +208,23 @@ public class Csv {
         public void setChoiceTrue() {
             isChoice = true;
         }
+    }
+
+    public List<CsvEntity> getEntities() {
+        return entities;
+    }
+
+    public String getType(String xmlTag) {
+        return TYPES.get(xmlTag);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (CsvEntity entity : entities) {
+            sb.append(entity).append(NEW_LINE);
+        }
+
+        return sb.toString();
     }
 }

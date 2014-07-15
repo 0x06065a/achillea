@@ -188,7 +188,6 @@ public class XmlNode {
         public static final String SCHEMA = "schema";
         public static final String ATTRIBUTE = "attribute";
         public static final String SECTION = "section";
-        public static final String EXTENSION = "extension";
         public static final String DOCUMENTATION = "documentation";
         public static final String CHOICE = "choice";
         private static final String VOID = "";
