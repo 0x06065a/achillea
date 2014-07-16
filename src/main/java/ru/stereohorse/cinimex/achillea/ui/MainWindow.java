@@ -12,10 +12,15 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
+import javax.xml.stream.XMLStreamException;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.*;
 
 public class MainWindow extends JFrame {
     private static final String WINDOW_TITLE = "Achillea";
@@ -65,10 +70,7 @@ public class MainWindow extends JFrame {
                 }
 
                 try {
-                    File xml = openFileChooser.getSelectedFile();
-                    currentSchema = new XsdSchema(xml);
-                    xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xml.getName()), currentSchema.getRoot())));
-                    xsdTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+                    openFile(openFileChooser.getSelectedFile());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
@@ -79,7 +81,45 @@ public class MainWindow extends JFrame {
         this.getContentPane().add(btnChooseXsd);
     }
 
+    private void openFile(File xml) throws IOException, XMLStreamException {
+        currentSchema = new XsdSchema(xml);
+        xsdTree.setModel(new DefaultTreeModel(createTree(new DefaultMutableTreeNode(xml.getName()), currentSchema.getRoot())));
+        xsdTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    }
+
     private void createChooseElementTree() {
+        xsdTree.setTransferHandler(new TransferHandler() {
+            @Override
+            public boolean importData(TransferSupport support) {
+                if (!canImport(support)) {
+                    return false;
+                }
+
+                Transferable transferable = support.getTransferable();
+
+                try {
+                    java.util.List<File> files = (java.util.List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (files.size() != 1) {
+                        return false;
+                    }
+
+                    openFile(files.get(0));
+
+                    return true;
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean canImport(TransferSupport support) {
+                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+            }
+        });
+
         this.getContentPane().add(new JScrollPane(xsdTree));
     }
 
