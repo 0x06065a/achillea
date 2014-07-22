@@ -184,6 +184,7 @@ public class XmlNode {
     public static class Tag {
         public static final String ELEMENT = "element";
         public static final String COMPLEX_TYPE = "complexType";
+        public static final String SIMPLE_TYPE = "simpleType";
         public static final String IMPORT = "import";
         public static final String SCHEMA = "schema";
         public static final String ATTRIBUTE = "attribute";

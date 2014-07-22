@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created at 2009-09-16  by Borodkin Sergey version 1.0 -->
+<!-- Simple types for SMTP service -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tp="http://www.raiffesen.ru/services/SMTP/message/v_1.0" targetNamespace="http://www.raiffesen.ru/services/SMTP/message/types/v_1.0">
+	<xsd:simpleType name="st_BodyContentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="text/plain"/>
+			<xsd:enumeration value="text/html"/>
+			<xsd:enumeration value="text/xml"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="st_AttachContentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="text/plain"/>
+			<xsd:enumeration value="text/html"/>
+			<xsd:enumeration value="text/xml"/>
+			<xsd:enumeration value="application/octet-stream"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="st_ContentEncoding">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="7bit"/>
+			<xsd:enumeration value="base-64"/>
+			<xsd:enumeration value="quoted-printable"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="st_MPContentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Mixed"/>
+			<xsd:enumeration value="Alternative"/>
+			<xsd:enumeration value="Related"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="st_MailList">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="st_Mail">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+</xsd:schema>

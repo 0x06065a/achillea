@@ -106,6 +106,7 @@ public class XsdSchema {
         if (tag != null) {
             switch (tag) {
                 case XmlNode.Tag.COMPLEX_TYPE:
+                case XmlNode.Tag.SIMPLE_TYPE:
                     String typeName = node.getAttribute(XmlNode.Attribute.NAME);
                     String prefix = Strings.isNullOrEmpty(nsPrefix) ? tnsPrefix : nsPrefix;
                     xmlTypes.put(String.format("%s:%s", prefix, typeName), node);

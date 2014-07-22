@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created at 2009-09-16  by Borodkin Sergey version 1.0 -->
+<!-- SMTP message for service -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:smt="http://www.raiffesen.ru/services/SMTP/message/v_1.0" xmlns:tp="http://www.raiffesen.ru/services/SMTP/message/types/v_1.0" targetNamespace="http://www.raiffesen.ru/services/SMTP/message/v_1.0">
+	<xsd:import namespace="http://www.raiffesen.ru/services/SMTP/message/types/v_1.0" schemaLocation="SMTP_types_1.0.xsd"/>
+	<xsd:complexType name="ct_SMTPMessage">
+		<xsd:sequence>
+			<xsd:element name="Header" type="smt:ct_SMTPHeader"/>
+			<xsd:element name="Body" type="smt:ct_Body"/>
+			<xsd:element name="Attachment" type="smt:ct_Attachment" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="Message" type="smt:ct_SMTPMessage"/>
+	<xsd:complexType name="ct_SMTPHeader">
+		<xsd:sequence>
+			<xsd:element name="To" type="tp:st_MailList"/>
+			<xsd:element name="Cc" type="tp:st_MailList" minOccurs="0"/>
+			<xsd:element name="Bcc" type="tp:st_MailList" minOccurs="0"/>
+			<xsd:element name="From" type="tp:st_Mail"/>
+			<xsd:element name="ReplyTo" type="tp:st_MailList" minOccurs="0"/>
+			<xsd:element name="Subject" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Body">
+		<xsd:sequence>
+			<xsd:element name="ContentType" type="tp:st_BodyContentType" default="text/plain" minOccurs="0"/>
+			<xsd:element name="ContentEncoding" type="xsd:string" default="utf-8" minOccurs="0"/>
+			<xsd:element name="Data" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Attachment">
+		<xsd:sequence>
+			<xsd:element name="ContentType" type="tp:st_AttachContentType" default="text/plain" minOccurs="0"/>
+			<xsd:element name="ContentName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ContentEncoding" type="tp:st_ContentEncoding" default="7bit" minOccurs="0"/>
+			<xsd:element name="MPContentType" type="tp:st_MPContentType" default="Mixed" minOccurs="0"/>
+			<xsd:element name="Data" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

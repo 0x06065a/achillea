@@ -28,6 +28,11 @@ public class CsvParsingTest {
     }
 
     @Test
+    public void testSmtpConfirmElement() throws Exception {
+        testFullFormat("resources/smtp/SMTP_confirm_1.0.xsd", "ct_SMTPConfirm", "smtpConfirm.csv");
+    }
+
+    @Test
     public void testRatesComplexType() throws Exception {
         testFullFormat("resources/Rates_20120229.xsd", "ct_Rates", "rates.csv");
     }

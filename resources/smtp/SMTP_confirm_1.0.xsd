@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created at 2009-09-16  by Borodkin Sergey version 1.0 -->
+<!-- SMTP message for service -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cfm="http://www.raiffesen.ru/services/SMTP/confirm/v_1.0" xmlns:tp="http://www.raiffesen.ru/services/SMTP/message/types/v_1.0" targetNamespace="http://www.raiffesen.ru/services/SMTP/confirm/v_1.0">
+	<xsd:import namespace="http://www.raiffesen.ru/services/SMTP/message/types/v_1.0" schemaLocation="SMTP_types_1.0.xsd"/>
+	<xsd:element name="Confirm" type="cfm:ct_SMTPConfirm"/>
+	<xsd:complexType name="ct_SMTPConfirm">
+		<xsd:sequence>
+			<xsd:element name="Code" type="xsd:integer"/>
+			<xsd:element name="Status" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="From" type="tp:st_Mail"/>
+			<xsd:element name="To" type="tp:st_MailList" minOccurs="0"/>
+			<xsd:element name="Subject" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
