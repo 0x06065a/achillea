@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Alex (RAIFFEISENBANK) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bc="http://www.raiffeisen.ru/types/BaseClientData/v1" xmlns:pd="http://www.raiffeisen.ru/types/Individual/PersonalData/v1" xmlns:ic="http://www.raiffeisen.ru/types/IndividualData/v1" xmlns:tns="http://www.raiffeisen.ru/types/ClientData/v1" xmlns:cf="http://www.raiffeisen.ru/types/CustomField/v1" xmlns:ns1="http://www.raiffeisen.ru/types/Contact/v2" xmlns:ns6="http://www.raiffeisen.ru/types/ClientRiskStatus/v1" xmlns:ns3="http://www.raiffeisen.ru/types/ClientManager/v1" xmlns:cc="http://www.raiffeisen.ru/types/CorporateData/v1" xmlns:ns4="http://www.raiffeisen.ru/types/ClientRating/v1" xmlns:crm="http://www.raiffeisen.ru/types/CRMData/v1" xmlns:idd="http://www.raiffeisen.ru/types/IdDocument/v1" xmlns:ns7="http://www.raiffeisen.ru/types/TariffData/v1" xmlns:ns8="http://www.raiffeisen.ru/types/ElbaData/v1" xmlns:ns9="http://www.raiffeisen.ru/types/NonResidentData/v1" xmlns:ns10="http://www.raiffeisen.ru/types/FinInstData/v1" xmlns:ns11="http://www.raiffeisen.ru/types/OtherClientData/v1" xmlns:ns2="http://www.raiffeisen.ru/types/TariffData/v1" xmlns:br="http://www.raiffeisen.ru/types/Branch/v1" targetNamespace="http://www.raiffeisen.ru/types/ClientData/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	
+	<xsd:import namespace="http://www.raiffeisen.ru/types/TariffData/v1" schemaLocation="TariffData.xsd"/>
+	<xsd:complexType name="ct_ClientData">
+		<xsd:sequence>
+			
+			<xsd:element name="tariffData" type="ns7:ct_TariffData" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_ClientDataList">
+		<xsd:sequence>
+			<xsd:element name="clientData" type="tns:ct_ClientData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -109,12 +109,12 @@ public class Csv {
     }
 
     private XmlNode getType(XmlNode node) {
-        String xmlType = node.getCalculatedXmlType();
-        if (xmlType == null) {
+        List<String> xmlTypes = node.getCalculatedXmlTypes();
+        if (xmlTypes.isEmpty()) {
             return null;
         }
 
-        XmlNode typeDeclaration = node.getSchema().getXmlType(xmlType);
+        XmlNode typeDeclaration = node.getSchema().getXmlType(xmlTypes);
 
         if (typeDeclaration == null) {
            throw new RuntimeException(String.format(ERR_FMT_NO_DECLARATION, node.getXmlType(),

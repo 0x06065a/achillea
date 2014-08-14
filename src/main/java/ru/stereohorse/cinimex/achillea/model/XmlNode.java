@@ -166,19 +166,26 @@ public class XmlNode {
         return xmlType;
     }
 
-    public String getCalculatedXmlType() {
+    public List<String> getCalculatedXmlTypes() {
         String xmlType = getXmlType();
         if (xmlType == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         String schemaTnsPrefix = schema.getTnsPrefix();
         if (xmlType.startsWith(schemaTnsPrefix + ":")) {
-            String prefix = Strings.isNullOrEmpty(schema.getNsPrefix()) ? schema.getTnsPrefix() : schema.getNsPrefix();
-            return prefix + xmlType.substring(schemaTnsPrefix.length());
+            if (schema.getNsPrefixes().isEmpty()) {
+                return Arrays.asList(schema.getTnsPrefix() + xmlType.substring(schemaTnsPrefix.length()));
+            } else {
+                List<String> calculatedTypes = new ArrayList<>();
+                for (String nsPrefix : schema.getNsPrefixes()) {
+                    calculatedTypes.add(nsPrefix + xmlType.substring(schemaTnsPrefix.length()));
+                }
+                return calculatedTypes;
+            }
         }
 
-        return xmlType;
+        return Arrays.asList(xmlType);
     }
 
     public static class Tag {

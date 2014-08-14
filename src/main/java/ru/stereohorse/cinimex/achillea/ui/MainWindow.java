@@ -16,11 +16,9 @@ import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.*;
 
 public class MainWindow extends JFrame {
     private static final String WINDOW_TITLE = "Achillea";
@@ -87,6 +85,7 @@ public class MainWindow extends JFrame {
         xsdTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     }
 
+    @SuppressWarnings("unchecked")
     private void createChooseElementTree() {
         xsdTree.setTransferHandler(new TransferHandler() {
             @Override

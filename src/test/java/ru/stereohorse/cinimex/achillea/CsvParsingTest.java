@@ -38,6 +38,11 @@ public class CsvParsingTest {
     }
 
     @Test
+    public void testClientDataListType() throws Exception {
+        testFullFormat("resources/clientData/ClientData.xsd", "ct_ClientDataList", "clientData.csv");
+    }
+
+    @Test
     public void testCreateLoanRequestComplexTypeMappingStyle() throws Exception {
         testMappingStyleFormat("resources/loanService/LoanService.xsd", "createLoanRequest", "createLoanRequestMappingStyle.csv");
     }

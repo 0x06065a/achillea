@@ -1,8 +1,6 @@
 package ru.stereohorse.cinimex.achillea.model;
 
 
-import com.google.common.base.Strings;
-
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -25,21 +23,22 @@ public class XsdSchema {
 
     private final XmlNode root = new XmlNode(this);
     private final List<XmlNode> imports = new ArrayList<>();
-    private final Map<String, String> namespaces = new HashMap<>();
+    private final Map<String, List<String>> namespaces = new HashMap<>();
     private final List<XsdSchema> linkedSchemas = new ArrayList<>();
     private final Map<String, XmlNode> xmlTypes = new HashMap<>();
 
-    private final String nsPrefix;
+    private final List<String> nsPrefixes;
     private String tnsPrefix;
 
     private final File file;
 
+    @SuppressWarnings("unchecked")
     public XsdSchema(File file) throws IOException, XMLStreamException {
-        this(file, "");
+        this(file, Collections.EMPTY_LIST);
     }
 
-    private XsdSchema(File file, String nsPrefix) throws IOException, XMLStreamException {
-        this.nsPrefix = nsPrefix;
+    private XsdSchema(File file, List<String> nsPrefixes) throws IOException, XMLStreamException {
+        this.nsPrefixes = nsPrefixes;
         this.file = file;
 
         try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
@@ -55,16 +54,16 @@ public class XsdSchema {
         for (XmlNode imp : imports) {
             String schemaLocation = imp.getAttribute(XmlNode.Attribute.SCHEMA_LOCATION);
             String nsURI = imp.getAttribute(XmlNode.Attribute.NAMESPACE);
-            String linkedSchemaNsPrefix = namespaces.get(nsURI);
+            List<String> linkedSchemaNsPrefixes = namespaces.get(nsURI);
 
             try {
-                linkedSchemas.add(new XsdSchema(new File(file.getParent(), schemaLocation), linkedSchemaNsPrefix));
+                linkedSchemas.add(new XsdSchema(new File(file.getParent(), schemaLocation), linkedSchemaNsPrefixes));
             } catch (IOException | XMLStreamException e) {
                 throw new RuntimeException(String.format(ERR_FMT_IMPORT, schemaLocation, file.getAbsolutePath()), e);
             }
         }
 
-        String xsdNamespace = namespaces.get(XSD_URI);
+        String xsdNamespace = namespaces.get(XSD_URI).get(0);
         for (String type : BUILT_IN_DATA_TYPES) {
             xmlTypes.put(String.format("%s:%s", xsdNamespace, type), XmlNode.VOID);
         }
@@ -108,8 +107,14 @@ public class XsdSchema {
                 case XmlNode.Tag.COMPLEX_TYPE:
                 case XmlNode.Tag.SIMPLE_TYPE:
                     String typeName = node.getAttribute(XmlNode.Attribute.NAME);
-                    String prefix = Strings.isNullOrEmpty(nsPrefix) ? tnsPrefix : nsPrefix;
-                    xmlTypes.put(String.format("%s:%s", prefix, typeName), node);
+
+                    if (nsPrefixes.isEmpty()) {
+                        registerType(node, tnsPrefix, typeName);
+                    } else {
+                        for (String nsPrefix : nsPrefixes) {
+                            registerType(node, nsPrefix, typeName);
+                        }
+                    }
                     break;
 
                 case XmlNode.Tag.IMPORT:
@@ -117,7 +122,10 @@ public class XsdSchema {
                     break;
 
                 case XmlNode.Tag.SCHEMA:
-                    tnsPrefix = namespaces.get(node.getAttribute(XmlNode.Attribute.TNS));
+                    List<String> tnsPrefixes = namespaces.get(node.getAttribute(XmlNode.Attribute.TNS));
+                    if (tnsPrefixes != null && !tnsPrefixes.isEmpty()) {
+                        tnsPrefix = tnsPrefixes.get(0);
+                    }
                     break;
             }
         }
@@ -125,11 +133,21 @@ public class XsdSchema {
         return node;
     }
 
+    private void registerType(XmlNode node, String prefix, String typeName) {
+        xmlTypes.put(String.format("%s:%s", prefix, typeName), node);
+    }
+
     private void parseNamespaces(XMLEvent xmlEvent) {
         Iterator namespaces = xmlEvent.asStartElement().getNamespaces();
         while (namespaces.hasNext()) {
             Namespace ns = (Namespace) namespaces.next();
-            this.namespaces.put(ns.getNamespaceURI(), ns.getPrefix());
+
+            String nsUri = ns.getNamespaceURI();
+            if (this.namespaces.get(nsUri) == null) {
+                this.namespaces.put(nsUri, new ArrayList<String>());
+            }
+
+            this.namespaces.get(nsUri).add(ns.getPrefix());
         }
     }
 
@@ -137,18 +155,22 @@ public class XsdSchema {
         return root;
     }
 
-    public XmlNode getXmlType(String name) {
-        XmlNode node = xmlTypes.get(name);
-        if (node == null) {
-            for (XsdSchema schema : linkedSchemas) {
-                node = schema.getXmlType(name);
-                if (node != null) {
-                    return node;
-                }
+    public XmlNode getXmlType(List<String> aliases) {
+        for (String alias : aliases) {
+            XmlNode typeNode = xmlTypes.get(alias);
+            if (typeNode != null) {
+                return typeNode;
             }
         }
 
-        return node;
+        for (XsdSchema schema : linkedSchemas) {
+            XmlNode typeNode = schema.getXmlType(aliases);
+            if (typeNode != null) {
+                return typeNode;
+            }
+        }
+
+        return null;
     }
 
     public XmlNode getNodeByNameAttribute(String name) {
@@ -163,7 +185,7 @@ public class XsdSchema {
         return tnsPrefix;
     }
 
-    public String getNsPrefix() {
-        return nsPrefix;
+    public List<String> getNsPrefixes() {
+        return nsPrefixes;
     }
 }
