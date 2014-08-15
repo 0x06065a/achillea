@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Alex (RAIFFEISENBANK) -->
+<!--Created at 2009-10-13 by Borodkin Sergey-->
+<!--Corporate Client Type description-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.raiffeisen.ru/types/Cocunut/v1" xmlns:nace="http://www.raiffeisen.ru/types/Nace/v1" xmlns:gics="http://www.raiffeisen.ru/types/Gics/v1" xmlns:lstr="http://www.raiffeisen.ru/types/LegalStructure/v1" xmlns:tns="http://www.raiffeisen.ru/types/CorporateData/v2" xmlns:prn="http://www.raiffeisen.ru/types/PersonName/v1" targetNamespace="http://www.raiffeisen.ru/types/CorporateData/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+	<xsd:annotation>
+		<xsd:documentation>
+1.00.00	- initial Version
+2.0.0 - add  isResident, additionalName, ownershipCode, ceoPosition, ceoName, businessStatus, businessStatusDate, parentCompaneName
+	</xsd:documentation>
+	</xsd:annotation>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Cocunut/v1" schemaLocation="Cocunut.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Nace/v1" schemaLocation="Nace.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Gics/v1" schemaLocation="Gics.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/LegalStructure/v1" schemaLocation="LegalStructure.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/PersonName/v1" schemaLocation="PersonName.xsd"/>
+	<xsd:complexType name="ct_CorporateData">
+		<xsd:sequence>
+			<xsd:element name="isResident" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Признак резидентства юр.лица:
+0 – нерезидент;
+1 – резидент</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="rusLegalName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="rusFullName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="rusShortName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="prevRusLegalName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="latLegalName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="latFullName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="latShortName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="firmName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Фирменное наименование предприятия</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="additionalName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование на одном из языков РФ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="kioCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="gams" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="okonh" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="territorialKPP" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="inn" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="okpo" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="okved" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="okato" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="reuters" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="swift" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="taxPayerKPP" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ownershipCode" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Код собственности</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tigerGroupNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="tigerGroupName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="cocunut" type="add:ct_Cocunut" minOccurs="0"/>
+			<xsd:element name="tinRegistrationDate" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="tinRegistrationCertificate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="tinRegisteringOrganization" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ogrnNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ogrnRegistrationDate" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ogrnRegistrationCertificate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="nace" type="nace:ct_Nace" minOccurs="0"/>
+			<xsd:element name="rusInvoiceLegalName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="significantMarket" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="foundationDate" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="gics" type="gics:ct_Gics" minOccurs="0"/>
+			<xsd:element name="legalStructure" type="lstr:ct_LegalStructure" minOccurs="0"/>
+			<xsd:element name="entrepreneurType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="isRepresentativeOffice" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="telex" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="foreignRegistrationNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="headOfficeCountry" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="foundationCountry" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ceoPosition" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Название должности руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ceoName" type="prn:ct_PersonName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ФИО  руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="businessStatus" type="xsd:int" minOccurs="0"/>
+			<xsd:element name="businessStatusDate" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="parentCompaneName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Название материнской компании</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

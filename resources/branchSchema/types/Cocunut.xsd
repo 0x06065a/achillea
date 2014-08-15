@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Alex (RAIFFEISENBANK) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.raiffeisen.ru/types/Cocunut/v1" xmlns:ns1="http://www.raiffeisen.ru/types/Address/v2" targetNamespace="http://www.raiffeisen.ru/types/Cocunut/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+	<xsd:complexType name="ct_Cocunut">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="number" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="typeDesc" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

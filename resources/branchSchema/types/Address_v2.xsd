@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Zaporozhets Yulia (ZAO Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.raiffeisen.ru/types/Address/v2" xmlns:ns1="http://www.raiffeisen.ru/types/Address/v2" targetNamespace="http://www.raiffeisen.ru/types/Address/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.2.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			Version change history:
+			2.1.0 - first annotated version;
+			2.2.0 - sourceId added;
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="ct_Address">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Тип адреса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="country" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Страна</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="postCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Индекс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="regionType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип региона</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="region" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Область (субъект РФ)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="districtType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип района</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="district" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Район</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cityType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип города</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="city" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Город</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="settlementType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип населенного пункта</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="settlement" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Населенный пункт</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="streetType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип улицы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="street" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Улица</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="house" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дом</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="building" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Строение</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="block" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Корпус</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="apartment" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Квартира (офис)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="kladrCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>КЛАДР-код</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fullAddress" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес одной строкой</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Комментарий</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="status" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип адреса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="startDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Дата начала проживания</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="okatoCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="typeDescription" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Расшифровка типа адреса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="latCityAddress" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Страна/Город</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="latStreetAddress" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес, начало с указания улицы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sourceId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор записи в системе-источнике</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_AddressList">
+		<xsd:sequence>
+			<xsd:element name="address" type="add:ct_Address" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

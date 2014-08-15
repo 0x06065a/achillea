@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Natalya (RAIFFEISENBANK) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.raiffeisen.ru/types/LegalStructure/v1" xmlns:ns1="http://www.raiffeisen.ru/types/Address/v2" targetNamespace="http://www.raiffeisen.ru/types/LegalStructure/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+	<xsd:complexType name="ct_LegalStructure">
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="shortName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="fullName" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

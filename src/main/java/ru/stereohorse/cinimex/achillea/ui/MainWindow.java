@@ -1,6 +1,7 @@
 package ru.stereohorse.cinimex.achillea.ui;
 
 
+import com.google.common.base.Strings;
 import ru.stereohorse.cinimex.achillea.model.Csv;
 import ru.stereohorse.cinimex.achillea.model.XmlNode;
 import ru.stereohorse.cinimex.achillea.model.XsdSchema;
@@ -25,6 +26,8 @@ public class MainWindow extends JFrame {
     private static final String BTN_OPEN_TITLE = "Открыть XSD";
     private static final String BTN_SAVE_FULL_TITLE = "Сохранить полную CSV";
     private static final String BTN_SAVE_MAPPING_STYLE_TITLE = "Сохранить короткую CSV";
+
+    private static final String ERR_MALFORMED_XML = "Unable to parse XML";
 
     private static final String FILE_SAVED = "CSV-файл сохранен";
     private static final String CHOOSE_XSD = "Выберите XSD-схему";
@@ -70,7 +73,12 @@ public class MainWindow extends JFrame {
                 try {
                     openFile(openFileChooser.getSelectedFile());
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(MainWindow.this, e.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+                    String msg = e.getLocalizedMessage();
+                    if (Strings.isNullOrEmpty(msg)) {
+                        msg = ERR_MALFORMED_XML;
+                    }
+
+                    JOptionPane.showMessageDialog(MainWindow.this, msg, null, JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
                 }
             }

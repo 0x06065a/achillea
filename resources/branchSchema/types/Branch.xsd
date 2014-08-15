@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Employee (ZAO Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:br="http://www.raiffeisen.ru/types/Branch/v1" xmlns:eml="http://www.raiffeisen.ru/types/Fax/v1" xmlns:ns1="http://www.raiffeisen.ru/types/Email/v1" xmlns:tns="http://www.raiffeisen.ru/types/CorporateData/v2" targetNamespace="http://www.raiffeisen.ru/types/Branch/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			Version change history:
+			1.2.0 - sourceId added;
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Fax/v1" schemaLocation="Fax.xsd"/>
+	<xsd:import/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Email/v1" schemaLocation="Email.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/CorporateData/v2" schemaLocation="CorporateData_v2.xsd"/>
+	<xsd:complexType name="ct_Branch">
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Код</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="branchType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Тип</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="region" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Регион</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="location" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="shortNameLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Краткое наименование по-английски</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="shortNameRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Краткое наименование по-русски</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="companyCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Трёхбуквенный код (RBA, ABS, NNV, ...)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sourceId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор записи в системе-источнике</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchList">
+		<xsd:sequence>
+			<xsd:element name="branch" type="br:ct_Branch" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchConnection">
+		<xsd:sequence>
+			<xsd:element name="branch" type="br:ct_Branch"/>
+			<xsd:element name="connectionType" type="xsd:string"/>
+			<xsd:element name="connectionRegion" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchConnectionList">
+		<xsd:sequence>
+			<xsd:element name="branchConnection" type="br:ct_BranchConnection" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchExt">
+		<xsd:complexContent>
+			<xsd:extension base="br:ct_Branch">
+				<xsd:sequence>
+					<xsd:element name="nameLAT" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Наименование отделения на англ.языке</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="nameRUS" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Наименование отделения на рус.языке</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fullNameRUS" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Полное наименование отделения (рус.)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fullNameLAT" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Полное наименование отделения (лат.)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="networkType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Тип сети отделений. Допустимые значения:
+• A
+• B</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="regionNameRUS" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Наименование региона (рус.)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="regionNameLAT" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Наименование региона (лат.)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="manager" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Руководитель отделения</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="contacts" type="br:ct_BranchContactsInfo" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Контакты</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="workingHours" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Режим работы</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="timeZone" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Часовой пояс. (Пример GMT+04:00)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="services" type="br:ct_ServicesList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Услуги. Примерные значения:
+Обслуживание физ. лиц
+Обслуживание юр. лиц
+Premium Banking
+Валютно-обменные операции
+Банкомат
+</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="openDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Дата открытия</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="closeDate" type="xsd:date" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Дата закрытия</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="status" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Статус</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="OKATO" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>ОКАТО</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="profitCentres" type="br:ct_ProfitCentreList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Профит центры</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="bookCode" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Код книги</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="filial" type="br:ct_Filial" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Информация о филиале</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ct_ServicesList">
+		<xsd:annotation>
+			<xsd:documentation>Услуги. Примерные значения:
+Обслуживание физ. лиц
+Обслуживание юр. лиц
+Premium Banking
+Валютно-обменные операции
+Банкомат</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="service" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_ProfitCentreList">
+		<xsd:sequence>
+			<xsd:element name="profitCentreCode" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_Filial">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование Филиала латинскими буквами</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="prepositionalName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование Филиала в предложном падеже</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="genitiveName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование Филиала в родительном падеже</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="nominativeNameRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование Филиала в именительном падеже на русском</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="nominativeNameLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Наименование Филиала в именительном падеже (на англ.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="regionCorpParentId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор регионального центра для использования для клиентов юр. лиц (должен совпадать с идентификатором в справочнике Hubs)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="corpCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="accountCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Используется при создании счета</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="retailCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="abs4Code" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="bic" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Бик Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="corrAccount" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Корреспондентский счет Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="corrAccDescRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Описание корреспондентского счета Филиала на русском</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="corrAccDescLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Описание корреспондентского счета Филиала на английском</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="contacts" type="br:ct_FilialContactsInfo" minOccurs="0"/>
+			<xsd:element name="KPP" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>КПП Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="corporateData" type="tns:ct_CorporateData" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchContactsInfo">
+		<xsd:sequence>
+			<xsd:element name="phoneNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Номер телефона</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fax" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Факс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cityLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Город (лат.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="cityRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Город (рус.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="postalCode" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Почтовый индекс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fullAddressRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес отделения (рус.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fullAddressLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес отделения (лат.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="courtAddressRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес суда на рус.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="courtAddressLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес суда на англ.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="email" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Email</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_FilialContactsInfo">
+		<xsd:sequence>
+			<xsd:element name="phoneNumber" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Телефонный номер Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="fax" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Номер факса Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="addressRUS" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес Филиала</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="addressLAT" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Адрес Филиала (на англ.)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_BranchExtList">
+		<xsd:sequence>
+			<xsd:element name="branch" type="br:ct_BranchExt" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Elena Ziatdinova (ZAO Raiffeisenbank) -->
+<!--Created at 2009-10-12 by Borodkin Sergey-->
+<!--Person name type-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:prn="http://www.raiffeisen.ru/types/PersonName/v1" targetNamespace="http://www.raiffeisen.ru/types/PersonName/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2.0">
+	<xsd:complexType name="ct_PersonName">
+		<xsd:sequence>
+			<xsd:element name="firstName" type="xsd:string" nillable="true" minOccurs="0"/>
+			<xsd:element name="lastName" type="xsd:string" nillable="true" minOccurs="0"/>
+			<xsd:element name="middleName" type="xsd:string" nillable="true" minOccurs="0"/>
+			<xsd:element name="fullName" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Element is filled in case we cannot split name to firstName, lastName and middleName.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

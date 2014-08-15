@@ -43,6 +43,11 @@ public class CsvParsingTest {
     }
 
     @Test
+    public void testBranchSchema() throws Exception {
+        testFullFormat("resources/branchSchema/BranchSchema.xsd", "ct_GetBranchInfoRequest", "branchSchema.csv");
+    }
+
+    @Test
     public void testCreateLoanRequestComplexTypeMappingStyle() throws Exception {
         testMappingStyleFormat("resources/loanService/LoanService.xsd", "createLoanRequest", "createLoanRequestMappingStyle.csv");
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:eml="http://www.raiffeisen.ru/types/Email/v1" xmlns:phn="http://www.raiffeisen.ru/types/Phone/v1" xmlns:add="http://www.raiffeisen.ru/types/Address/v2" xmlns:tns="http://www.raiffeisen.ru/types/Contact/v2" xmlns:ns1="http://www.raiffeisen.ru/types/Fax/v1" targetNamespace="http://www.raiffeisen.ru/types/Contact/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			Version change history:
+			2.1.0 - sourceId added;
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Email/v1" schemaLocation="Email.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Phone/v1" schemaLocation="Phone.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Address/v2" schemaLocation="Address_v2.xsd"/>
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Fax/v1" schemaLocation="Fax.xsd"/>
+	<xsd:simpleType name="st_ContactKind">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="phone"/>
+			<xsd:enumeration value="email"/>
+			<xsd:enumeration value="address"/>
+			<xsd:enumeration value="fax"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ct_Contact">
+		<xsd:sequence>
+			<xsd:element name="kind" type="tns:st_ContactKind"/>
+			<xsd:element name="isNotification" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="status" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="rating" type="xsd:string" minOccurs="0"/>
+			<xsd:choice>
+				<xsd:element name="phone" type="phn:ct_Phone"/>
+				<xsd:element name="email" type="eml:ct_Email"/>
+				<xsd:element name="address" type="add:ct_Address"/>
+				<xsd:element name="fax" type="ns1:ct_Fax"/>
+			</xsd:choice>
+			<xsd:element name="sourceId" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор записи в системе-источнике</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_ContactList">
+		<xsd:sequence>
+			<xsd:element name="contact" type="tns:ct_Contact" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

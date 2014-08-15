@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 sp1 (http://www.altova.com) by Employee (ZAO Raiffeisenbank) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.raiffeisen.ru/services/Branch/v2" xmlns:ns2="http://www.raiffeisen.ru/types/BranchData/v1" xmlns:br="http://www.raiffeisen.ru/types/Branch/v1" targetNamespace="http://www.raiffeisen.ru/services/Branch/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+	<xsd:import namespace="http://www.raiffeisen.ru/types/Branch/v1" schemaLocation="types/Branch.xsd"/>
+	<xsd:complexType name="ct_GetBranchInfoRequest">
+		<xsd:annotation>
+			<xsd:documentation>Формат запроса информации о бранче</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ip" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>IP-адрес устройства, расположенного в бранче</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="mask" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Маска подсети, в которой находится устройство</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="branchCode" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Код бранча</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="login" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Логин пользователя, работающего в бранче</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_GetBranchInfoResponse">
+		<xsd:annotation>
+			<xsd:documentation>Формат ответного сообщения на запрос информации по зарплатному клиенту</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="br:ct_BranchExtList"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

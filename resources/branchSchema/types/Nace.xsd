@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by Alex (Raiffeisen Informatik Consulting GmbH) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.raiffeisen.ru/types/Nace/v1" xmlns:stf="http://www.raiffeisen.ru/types/StringFilter/v1" targetNamespace="http://www.raiffeisen.ru/types/Nace/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xsd:complexType name="ct_Nace">
+		<xsd:sequence>
+			<xsd:element name="activityCode" type="xsd:string"/>
+			<xsd:element name="activityName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="industryName" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

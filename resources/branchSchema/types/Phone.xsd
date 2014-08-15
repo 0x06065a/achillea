@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (http://www.altova.com) by Alex (RAIFFEISENBANK) -->
+<!--Created at 2009-10-16 by Borodkin Sergey-->
+<!--Phone Type description-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:phn="http://www.raiffeisen.ru/types/Phone/v1" targetNamespace="http://www.raiffeisen.ru/types/Phone/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1.1">
+	<xsd:complexType name="ct_Phone">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="category" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="countryCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="areaCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="phoneNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="extension" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="operatorName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="operatorRegion" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ct_PhoneList">
+		<xsd:sequence>
+			<xsd:element name="phone" type="phn:ct_Phone" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

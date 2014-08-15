@@ -1,6 +1,8 @@
 package ru.stereohorse.cinimex.achillea.model;
 
 
+import com.google.common.base.Strings;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -55,6 +57,10 @@ public class XsdSchema {
             String schemaLocation = imp.getAttribute(XmlNode.Attribute.SCHEMA_LOCATION);
             String nsURI = imp.getAttribute(XmlNode.Attribute.NAMESPACE);
             List<String> linkedSchemaNsPrefixes = namespaces.get(nsURI);
+
+            if (Strings.isNullOrEmpty(schemaLocation)) {
+                continue;
+            }
 
             try {
                 linkedSchemas.add(new XsdSchema(new File(file.getParent(), schemaLocation), linkedSchemaNsPrefixes));
